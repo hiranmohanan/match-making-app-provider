@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "679716517261",
+    "project_id": "match-making-app-664b9",
+    "storage_bucket": "match-making-app-664b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679716517261:android:c5902b2ef9d59f968e39c4",
+        "android_client_info": {
+          "package_name": "com.example.match_making_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2waXAG7boEDFV5FbQJdW5a8YGV7dbW0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
