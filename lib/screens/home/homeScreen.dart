@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:match_making_test/UI%20Elements/drawer.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,6 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawerCommon(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
           if (value == 0) {

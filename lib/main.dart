@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:match_making_test/firebase/firebase_provider.dart';
+import 'package:match_making_test/provider/firebase_login_provider.dart';
 import 'package:match_making_test/firebase_options.dart';
 import 'package:match_making_test/screens/home/homeScreen.dart';
 import 'package:match_making_test/screens/login/loginScreen.dart';
@@ -8,6 +8,8 @@ import 'package:match_making_test/shared/theme_data_light.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import 'provider/firebase_signout_provider.dart';
+import 'provider/firebase_signup_provider.dart';
 import 'screens/profile/profileScreen.dart';
 import 'screens/search page/searchScreen.dart';
 import 'screens/signup/signuppage.dart';
@@ -36,13 +38,19 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<FirebaseLoginProvider>(
             create: (_) => FirebaseLoginProvider(),
-          )
+          ),
+          ChangeNotifierProvider<FirebaseSignoutProvider>(
+            create: (_) => FirebaseSignoutProvider(),
+          ),
+          ChangeNotifierProvider<FirebaseSignupProvider>(
+            create: (_) => FirebaseSignupProvider(),
+          ),
         ],
         child: MaterialApp(
           // theme is the light theme that is imported from the theme_data_light.dart file
           theme: lightTheme,
           // initialRoute is the first page that will be shown when the app is opened
-          initialRoute: '/login',
+          initialRoute: '/home',
           // routes are the different pages that are in the app
           routes: {
             '/login': (context) => const LoginPage(),

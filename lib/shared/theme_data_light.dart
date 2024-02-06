@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:match_making_test/shared/colors.dart';
+import 'package:match_making_test/shared/dimensions.dart';
 
 import 'font_size.dart';
 import 'theme.dart';
@@ -74,6 +75,24 @@ ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(7)),
     ),
     splashColor: KLightStyle.regularButtonColor,
+  ),
+  searchBarTheme: const SearchBarThemeData(
+    backgroundColor: MaterialStatePropertyAll(KConstantColors.whiteColor),
+    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(7)),
+    )),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      minimumSize: MaterialStateProperty.all(Size(hBox3, vBox3)),
+      backgroundColor:
+          MaterialStateProperty.all(KConstantColors.textFieldColor),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(7),
+        ),
+      ),
+    ),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: KLightStyle.floatingActionButtonBackgroundColor,

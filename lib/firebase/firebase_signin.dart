@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:match_making_test/firebase/firebase_provider.dart';
+import 'package:match_making_test/provider/firebase_login_provider.dart';
 
 Future<String?> signIn(
     {required String email, required String password}) async {
@@ -15,9 +15,9 @@ Future<String?> signIn(
     if (e.code == 'user-not-found') {
       return "No user found for that email.";
     } else if (e.code == 'wrong-password') {
-      return "Wrong password provided for that user.";
+      return "Wrong password ";
     } else {
-      return e.message; // Generic error message
+      return 'Error Signing in :${e.message}'; // Generic error message
     }
   }
 }

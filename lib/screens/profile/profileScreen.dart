@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../UI Elements/drawer.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -34,6 +36,7 @@ class ProfileScreen extends StatelessWidget {
               activeIcon: Icon(Icons.search_outlined)),
         ],
       ),
+      drawer: const AppDrawerCommon(),
       body: Center(
           child: Card(
               child: Container(
