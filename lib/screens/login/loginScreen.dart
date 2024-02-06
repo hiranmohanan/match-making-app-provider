@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
@@ -46,75 +45,78 @@ class LoginPage extends StatelessWidget {
     }
 
     return Scaffold(
+        appBar: AppBar(),
         body: Stack(
-      children: [
-        Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Spacer(),
-            const Text('Login', style: TextStyle(fontSize: 20)),
-            vSizedBox1,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: emailcontroller,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the email';
-                  } else if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  } else if (!value.contains('.')) {
-                    return 'Please enter a valid email';
-                  }
+          children: [
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    const Text('Login', style: TextStyle(fontSize: 20)),
+                    vSizedBox1,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: emailcontroller,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the email';
+                          } else if (!value.contains('@')) {
+                            return 'Please enter a valid email';
+                          } else if (!value.contains('.')) {
+                            return 'Please enter a valid email';
+                          }
 
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                ),
-              ),
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: passwordcontroller,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the password';
+                          } else if (value.length < 8) {
+                            return 'Password should be atleast 8 characters';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                      ),
+                    ),
+                    vSizedBox1,
+                    ElevatedButton(
+                      onPressed: () {
+                        login();
+                      },
+                      child: const Text('Login'),
+                    ),
+                    vSizedBox0,
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: const Text('Register'),
+                    ),
+                    const Spacer(),
+                  ]),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: passwordcontroller,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the password';
-                  } else if (value.length < 8) {
-                    return 'Password should be atleast 8 characters';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            vSizedBox1,
-            ElevatedButton(
-              onPressed: () {
-                login();
-              },
-              child: const Text('Login'),
-            ),
-            vSizedBox0,
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: const Text('Register'),
-            ),
-            const Spacer(),
-          ]),
-        ),
-        provider.isloading == true
-            ? const Center(child: CircularProgressIndicator())
-            : const SizedBox(),
-      ],
-    ));
+            provider.isloading == true
+                ? const Center(child: CircularProgressIndicator())
+                : const SizedBox(),
+          ],
+        ));
   }
 }

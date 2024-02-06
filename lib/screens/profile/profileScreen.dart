@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:match_making_test/shared/dimensions.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../UI Elements/drawer.dart';
@@ -9,6 +10,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
           if (value == 0) {
@@ -36,10 +40,11 @@ class ProfileScreen extends StatelessWidget {
               activeIcon: Icon(Icons.search_outlined)),
         ],
       ),
-      drawer: const AppDrawerCommon(),
+      drawer: const AppDrawerCommon(
+        index: 1,
+      ),
       body: Center(
-          child: Card(
-              child: Container(
+          child: Container(
         height: 90.h,
         margin: const EdgeInsets.all(20),
         child: SingleChildScrollView(
@@ -51,30 +56,28 @@ class ProfileScreen extends StatelessWidget {
                 width: 30.h,
                 child: const FlutterLogo(),
               ),
-              SizedBox(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    suffixIcon: Icon(Icons.edit),
-                  ),
+              vSizedBox1,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  suffixIcon: Icon(Icons.edit),
                 ),
               ),
-              SizedBox(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Height',
-                    suffixIcon: Icon(Icons.edit),
-                  ),
+              vSizedBox1,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Height',
+                  suffixIcon: Icon(Icons.edit),
                 ),
               ),
-              SizedBox(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Weight',
-                    suffixIcon: Icon(Icons.edit),
-                  ),
+              vSizedBox1,
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Weight',
+                  suffixIcon: Icon(Icons.edit),
                 ),
               ),
+              vSizedBox1,
               ExpansionTile(
                   title: const Text('Address'),
                   childrenPadding: const EdgeInsets.all(10),
@@ -87,30 +90,35 @@ class ProfileScreen extends StatelessWidget {
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Street',
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'City',
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'State',
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Country',
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Pincode',
@@ -130,12 +138,14 @@ class ProfileScreen extends StatelessWidget {
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Age',
                         suffixIcon: Icon(Icons.edit),
                       ),
                     ),
+                    vSizedBox1,
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Relation',
@@ -146,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ))),
+      )),
     );
   }
 }

@@ -41,7 +41,9 @@ class SearchScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Search'),
         ),
-        drawer: const AppDrawerCommon(),
+        drawer: const AppDrawerCommon(
+          index: 2,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(

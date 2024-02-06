@@ -7,7 +7,7 @@ import 'theme.dart';
 
 ThemeData lightTheme = ThemeData(
   primaryColor: KLightStyle.primaryButtonColor,
-  canvasColor: KLightStyle.mainBackgroundColor,
+  canvasColor: KLightStyle.secondaryBackgroundColor,
   fontFamily: KLightStyle.mainFontFamily,
   scaffoldBackgroundColor: KLightStyle.secondaryBackgroundColor,
   appBarTheme: AppBarTheme(

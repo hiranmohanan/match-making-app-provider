@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           // theme is the light theme that is imported from the theme_data_light.dart file
           theme: lightTheme,
           // initialRoute is the first page that will be shown when the app is opened

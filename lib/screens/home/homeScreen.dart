@@ -8,7 +8,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const AppDrawerCommon(),
+      appBar: AppBar(),
+      drawer: const AppDrawerCommon(
+        index: 0,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
           if (value == 0) {

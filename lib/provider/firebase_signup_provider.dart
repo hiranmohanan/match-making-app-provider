@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/firebase/firebase_signup.dart';
+
+import '../database/usermodel.dart';
 
 class FirebaseSignupProvider extends ChangeNotifier {
   bool _isUserLoggedIn = false;
@@ -107,6 +111,7 @@ class FirebaseSignupProvider extends ChangeNotifier {
     }
     if (responce != null) {
       if (responce == 'Signed up') {
+        createdbandstore(name: _name, email: _email);
         setUserLoggedIn(true);
         setLoading(false);
       } else {
@@ -121,4 +126,16 @@ class FirebaseSignupProvider extends ChangeNotifier {
     }
     setLoading(false);
   }
+}
+
+createdbandstore({required String name, required String email}) async {
+  if (kDebugMode) {
+    print('=======================creating user in database');
+    print('uid: ${FirebaseAuth.instance.currentUser!.uid}');
+  }
+  await createUserInDatabase(UserModel(
+    uid: FirebaseAuth.instance.currentUser!.uid,
+    name: name,
+    email: email,
+  ));
 }
