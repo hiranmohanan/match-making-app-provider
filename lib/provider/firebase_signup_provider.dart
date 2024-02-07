@@ -5,6 +5,7 @@ import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/firebase/firebase_signup.dart';
 
 import '../database/usermodel.dart';
+import '../local data/shared_prefs.dart';
 
 class FirebaseSignupProvider extends ChangeNotifier {
   bool _isUserLoggedIn = false;
@@ -112,6 +113,7 @@ class FirebaseSignupProvider extends ChangeNotifier {
     if (responce != null) {
       if (responce == 'Signed up') {
         createdbandstore(name: _name, email: _email);
+        SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
         setUserLoggedIn(true);
         setLoading(false);
       } else {

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:match_making_test/shared/dimensions.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../UI Elements/drawer.dart';
+import '../../provider/firebase_profile_fetch_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProfileFetchProvider>(context, listen: false);
+    provider.fetchProfile();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:match_making_test/firebase/firebase_sign_out.dart';
 
+import '../local data/shared_prefs.dart';
+
 class FirebaseSignoutProvider extends ChangeNotifier {
   bool _isloading = false;
   bool _islogout = false;
@@ -26,6 +28,7 @@ class FirebaseSignoutProvider extends ChangeNotifier {
     }
     if (responce == "Signed out") {
       setLogout(true);
+      SharedPrefs().clearuid();
     } else {
       setLogout(false);
     }

@@ -11,12 +11,12 @@ Future<void> createUserInDatabase(UserModel user) async {
   }
   try {
     await dbRef.set({
-      'uid': '1',
-      'name': 'user.name.toString()',
-      'email': 'user.email.toString()',
-      'profilePic': 'user.profilePic.toString()',
-      'phone': 'user.phone.toString()',
-      'address': 'user.address.toString()',
+      'uid': user.uid.toString(),
+      'name': user.name.toString(),
+      'email': user.email.toString(),
+      'profilepic': user.profilePic.toString(),
+      'phone': user.phone.toString(),
+      'address': user.address.toString(),
     });
     if (kDebugMode) {
       print('=======================user created');
@@ -24,6 +24,21 @@ Future<void> createUserInDatabase(UserModel user) async {
   } catch (e) {
     if (kDebugMode) {
       print('=======================error in creating user: $e');
+    }
+  }
+}
+
+Future<void> readUserInDatabase(String uid) async {
+  final DatabaseReference dbRef =
+      FirebaseDatabase.instance.ref('userInfo').child('users');
+  final snapshot = await dbRef.get();
+  if (snapshot.exists) {
+    if (kDebugMode) {
+      print('=======================user read: ${snapshot.value}');
+    }
+  } else {
+    if (kDebugMode) {
+      print('=======================user not found');
     }
   }
 }

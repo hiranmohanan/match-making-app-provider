@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDFjKmHWdohv2TeowqRBhdVSv1wK0_ywQc',
-    appId: '1:679716517261:web:5d8e029665a0594a8e39c4',
-    messagingSenderId: '679716517261',
-    projectId: 'match-making-app-664b9',
-    authDomain: 'match-making-app-664b9.firebaseapp.com',
-    storageBucket: 'match-making-app-664b9.appspot.com',
-    measurementId: 'G-CEHB7CYR6Q',
+    apiKey: 'AIzaSyBHuNCS40VoAkSxn92sE5FLgEIgV9FmF5c',
+    appId: '1:305487500641:web:1aa5d66aa389838bfda120',
+    messagingSenderId: '305487500641',
+    projectId: 'match-making-app-bbfd5',
+    authDomain: 'match-making-app-bbfd5.firebaseapp.com',
+    storageBucket: 'match-making-app-bbfd5.appspot.com',
+    measurementId: 'G-GJ6X3FWVVP',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB2waXAG7boEDFV5FbQJdW5a8YGV7dbW0g',
-    appId: '1:679716517261:android:c5902b2ef9d59f968e39c4',
-    messagingSenderId: '679716517261',
-    projectId: 'match-making-app-664b9',
-    storageBucket: 'match-making-app-664b9.appspot.com',
+    apiKey: 'AIzaSyAaOVIx8FrU-tRuztJJO2gZF1kPKVoN-X0',
+    appId: '1:305487500641:android:7b786b5f52a01c2ffda120',
+    messagingSenderId: '305487500641',
+    projectId: 'match-making-app-bbfd5',
+    storageBucket: 'match-making-app-bbfd5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA0J4Pz6gq6hGLkYB75I_TpIIpkrt9X3yU',
-    appId: '1:679716517261:ios:2391c894d3a6914a8e39c4',
-    messagingSenderId: '679716517261',
-    projectId: 'match-making-app-664b9',
-    storageBucket: 'match-making-app-664b9.appspot.com',
+    apiKey: 'AIzaSyDkPOgjk78akNvq4zM6Ibf3oEgSm1wrFzQ',
+    appId: '1:305487500641:ios:76f47318f941d93afda120',
+    messagingSenderId: '305487500641',
+    projectId: 'match-making-app-bbfd5',
+    storageBucket: 'match-making-app-bbfd5.appspot.com',
     iosBundleId: 'com.example.matchMakingTest',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA0J4Pz6gq6hGLkYB75I_TpIIpkrt9X3yU',
-    appId: '1:679716517261:ios:4736b82b7e631db58e39c4',
-    messagingSenderId: '679716517261',
-    projectId: 'match-making-app-664b9',
-    storageBucket: 'match-making-app-664b9.appspot.com',
+    apiKey: 'AIzaSyDkPOgjk78akNvq4zM6Ibf3oEgSm1wrFzQ',
+    appId: '1:305487500641:ios:44cc9e246fd03f51fda120',
+    messagingSenderId: '305487500641',
+    projectId: 'match-making-app-bbfd5',
+    storageBucket: 'match-making-app-bbfd5.appspot.com',
     iosBundleId: 'com.example.matchMakingTest.RunnerTests',
   );
 }

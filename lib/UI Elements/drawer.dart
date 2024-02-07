@@ -3,7 +3,6 @@ import 'package:match_making_test/provider/firebase_signout_provider.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:match_making_test/shared/text_styles.dart';
-import 'package:match_making_test/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawerCommon extends StatefulWidget {

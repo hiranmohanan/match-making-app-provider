@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:679716517261:ios:4736b82b7e631db58e39c4",
-  "FIREBASE_PROJECT_ID": "match-making-app-664b9",
-  "GCM_SENDER_ID": "679716517261"
+  "GOOGLE_APP_ID": "1:305487500641:ios:44cc9e246fd03f51fda120",
+  "FIREBASE_PROJECT_ID": "match-making-app-bbfd5",
+  "GCM_SENDER_ID": "305487500641"
 }
