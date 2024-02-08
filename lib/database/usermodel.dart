@@ -2,14 +2,15 @@ class UserModel {
   String? uid;
   String? name;
   String? email;
-  String? profilePic;
-  String? phone;
-  String? height;
-  String? weight;
-  String? house;
-  String? city;
-  String? state;
-  String? family;
+  dynamic profilePic;
+  dynamic phone;
+  dynamic height;
+  dynamic weight;
+  dynamic house;
+  dynamic city;
+  dynamic state;
+  dynamic family;
+  int? gender;
   UserModel({
     this.uid,
     this.name,
@@ -22,6 +23,7 @@ class UserModel {
     this.city,
     this.state,
     this.family,
+    this.gender,
   });
   Map<String, dynamic> toMap() {
     return {
@@ -36,6 +38,7 @@ class UserModel {
       'city': city,
       'state': state,
       'family': family,
+      'gender': gender
     };
   }
 
@@ -52,6 +55,7 @@ class UserModel {
       city: map['city'],
       state: map['state'],
       family: map['family'],
+      gender: map['gender'],
     );
   }
 }

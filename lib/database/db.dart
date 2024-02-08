@@ -15,13 +15,14 @@ Future<void> createUserInDatabase(UserModel user) async {
       'name': user.name.toString(),
       'email': user.email.toString(),
       'profilepic': user.profilePic.toString(),
-      'phone': user.phone.toString(),
-      'height': user.height.toString(),
-      'weight': user.weight.toString(),
+      'phone': user.phone,
+      'height': user.height,
+      'weight': user.weight,
       'house': user.house.toString(),
       'city': user.city.toString(),
       'state': user.state.toString(),
       'family': user.family.toString(),
+      'gender': user.gender,
     });
     if (kDebugMode) {
       print('=======================user created');
@@ -45,9 +46,9 @@ Future<void> updateUserInformation(UserModel user) async {
       'name': user.name.toString(),
       'email': user.email.toString(),
       'profilepic': user.profilePic.toString(),
-      'phone': user.phone.toString(),
-      'height': user.height.toString(),
-      'weight': user.weight.toString(),
+      'phone': user.phone,
+      'height': user.height,
+      'weight': user.weight,
       'house': user.house.toString(),
       'city': user.city.toString(),
       'state': user.state.toString(),
@@ -69,23 +70,63 @@ Future<UserModel?> readUserInDatabase(String uid) async {
   final snapshot = await dbRef.get();
   if (snapshot.exists) {
     final UserModel user = UserModel(
-        uid: (snapshot.value as Map<dynamic, dynamic>)['uid'],
-        name: (snapshot.value as Map<dynamic, dynamic>)['name'],
-        email: (snapshot.value as Map<dynamic, dynamic>)['email'],
-        profilePic: (snapshot.value as Map<dynamic, dynamic>)['profilepic'],
-        phone: (snapshot.value as Map<dynamic, dynamic>)['phone'],
-        height: (snapshot.value as Map<dynamic, dynamic>)['height'],
-        weight: (snapshot.value as Map<dynamic, dynamic>)['weight'],
-        house: (snapshot.value as Map<dynamic, dynamic>)['house'],
-        city: (snapshot.value as Map<dynamic, dynamic>)['city'],
-        state: (snapshot.value as Map<dynamic, dynamic>)['state'],
-        family: (snapshot.value as Map<dynamic, dynamic>)['family']);
+      uid: (snapshot.value as Map<dynamic, dynamic>)['uid'],
+      name: (snapshot.value as Map<dynamic, dynamic>)['name'],
+      email: (snapshot.value as Map<dynamic, dynamic>)['email'],
+      profilePic: (snapshot.value as Map<dynamic, dynamic>)['profilepic'],
+      phone: (snapshot.value as Map<dynamic, dynamic>)['phone'],
+      height: (snapshot.value as Map<dynamic, dynamic>)['height'],
+      weight: (snapshot.value as Map<dynamic, dynamic>)['weight'],
+      house: (snapshot.value as Map<dynamic, dynamic>)['house'],
+      city: (snapshot.value as Map<dynamic, dynamic>)['city'],
+      state: (snapshot.value as Map<dynamic, dynamic>)['state'],
+      family: (snapshot.value as Map<dynamic, dynamic>)['family'],
+      gender: (snapshot.value as Map<dynamic, dynamic>)['gender'],
+    );
 
     if (kDebugMode) {
       print('=======================user read: ${snapshot.value}');
       print('object: ${user.toMap()}');
     }
     return user;
+  } else {
+    if (kDebugMode) {
+      print('=======================user not found');
+    }
+  }
+  return null;
+}
+
+Future<List<UserModel>?> getAllUser() async {
+  final DatabaseReference dbRef =
+      FirebaseDatabase.instance.ref('userInfo').child('users');
+  final snapshot = await dbRef.get();
+  if (snapshot.exists) {
+    if (kDebugMode) {
+      print('=======================user read: ${snapshot.value}');
+    }
+    final List<UserModel> users = [];
+
+    (snapshot.value as Map<dynamic, dynamic>).forEach((key, value) {
+      final UserModel user = UserModel(
+        uid: value['uid'],
+        name: value['name'],
+        email: value['email'],
+        profilePic: value['profilepic'],
+        phone: value['phone'],
+        height: value['height'],
+        weight: value['weight'],
+        house: value['house'],
+        city: value['city'],
+        state: value['state'],
+        family: value['family'],
+        gender:
+            value['gender'] == null ? 3 : int.parse(value['gender'].toString()),
+      );
+      users.add(user);
+    });
+
+    return users;
   } else {
     if (kDebugMode) {
       print('=======================user not found');

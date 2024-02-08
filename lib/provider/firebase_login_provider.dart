@@ -10,12 +10,14 @@ class FirebaseLoginProvider extends ChangeNotifier {
   String _responce = '';
   bool _isloading = false;
   String? _validatormessage;
+  bool _issecurefont = true;
   bool get isUserLoggedIn => _isUserLoggedIn;
   String get email => _email;
   String get password => _password;
   String get responce => _responce;
   bool get isloading => _isloading;
   String? get validator => _validatormessage;
+  bool get issecurefont => _issecurefont;
 
   void setUserLoggedIn(bool value) {
     _isUserLoggedIn = value;
@@ -66,6 +68,11 @@ class FirebaseLoginProvider extends ChangeNotifier {
 
   void loading(bool value) {
     _isloading = value;
+    notifyListeners();
+  }
+
+  void setsecurefont(bool value) {
+    _issecurefont = value;
     notifyListeners();
   }
 

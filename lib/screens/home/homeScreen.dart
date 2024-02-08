@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/UI%20Elements/drawer.dart';
+import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/services/services_getit.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,10 +13,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppServices _appservices = GetIt.instance<AppServices>();
+    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
     _appservices.setCurrentNavTab(0);
     _appservices.setCurrentDrawer(0);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.refresh,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            provider.fetchProfile();
+          },
+        ),
+      ]),
       drawer: const AppDrawerCommon(),
       bottomNavigationBar: const BottomNavBr(),
       body: Center(

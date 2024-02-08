@@ -9,11 +9,13 @@ class ProfileFetchProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isProfileFetched = false;
   bool _istextfalse = false;
+  bool _changedone = false;
 
   UserModel get userProfile => _userProfile;
   bool get isLoading => _isLoading;
   bool get isProfileFetched => _isProfileFetched;
   bool get istextfalse => _istextfalse;
+  bool get changedone => _changedone;
 
   void setUserModel(UserModel user) {
     _userProfile = user;
@@ -40,9 +42,9 @@ class ProfileFetchProvider extends ChangeNotifier {
     String? name,
     String? email,
     String? profilePic,
-    String? phone,
-    String? height,
-    String? weight,
+    int? phone,
+    int? height,
+    int? weight,
     String? house,
     String? city,
     String? state,
@@ -73,6 +75,19 @@ class ProfileFetchProvider extends ChangeNotifier {
       }
       setLoading(false);
     }
+  }
+
+  void validator() {
+    if (_userProfile.name!.isEmpty) {
+      _changedone = true;
+    } else if (_userProfile.height == null) {
+      _changedone = true;
+    } else if (_userProfile.weight == null) {
+      _changedone = true;
+    } else {
+      _istextfalse = false;
+    }
+    notifyListeners();
   }
 
   Future<User?> fetchProfile() async {

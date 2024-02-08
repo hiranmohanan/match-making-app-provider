@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
 
+import '../database/usermodel.dart';
+
 Future<String?> firebaseSignup(
-    {required String email, required String password}) async {
+    {required UserModel user, required String password}) async {
   try {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: user.email.toString(),
+      password: password,
+    );
 
     FirebaseSignupProvider().setUserLoggedIn(true);
     return "Signed up";

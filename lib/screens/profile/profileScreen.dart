@@ -20,9 +20,9 @@ class ProfileScreen extends StatelessWidget {
     TextEditingController nameController =
         TextEditingController(text: provider.userProfile.name ?? '');
     TextEditingController heightController =
-        TextEditingController(text: provider.userProfile.height);
+        TextEditingController(text: provider.userProfile.height.toString());
     TextEditingController weightController =
-        TextEditingController(text: provider.userProfile.weight);
+        TextEditingController(text: provider.userProfile.weight.toString());
     TextEditingController houseController =
         TextEditingController(text: provider.userProfile.house ?? '');
     TextEditingController cityController =
@@ -84,16 +84,36 @@ class ProfileScreen extends StatelessWidget {
                             padding: EdgeInsets.all(vBox1),
                             child: ElevatedButton(
                               onPressed: () {
-                                provider.saveUserModel(
-                                  name: nameController.text,
-                                  height: heightController.text,
-                                  weight: weightController.text,
-                                  house: houseController.text,
-                                  city: cityController.text,
-                                  state: stateController.text,
-                                  family: familyController.text,
-                                );
-                                provider.setistextfalse(!istextfield);
+                                provider.validator();
+                                if (provider.changedone == true) {
+                                  provider.saveUserModel(
+                                    name: nameController.text,
+                                    height: int.parse(heightController.text),
+                                    weight: int.parse(weightController.text),
+                                    house: houseController.text,
+                                    city: cityController.text,
+                                    state: stateController.text,
+                                    family: familyController.text,
+                                  );
+                                  provider.setistextfalse(!istextfield);
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Alert'),
+                                          content: const Text(
+                                              'Please add required datas to save'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Ok'))
+                                          ],
+                                        );
+                                      });
+                                }
                               },
                               child: const Text('Save Changes'),
                             ),
@@ -114,6 +134,12 @@ class ProfileScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(vBox1),
                       child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the name';
+                          }
+                          return null;
+                        },
                         controller: nameController,
                         enabled: istextfield,
                         decoration: const InputDecoration(
@@ -129,6 +155,13 @@ class ProfileScreen extends StatelessWidget {
                       child: TextFormField(
                         enabled: istextfield,
                         controller: heightController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the height';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
                           labelText: 'Height',
                         ),
@@ -142,6 +175,13 @@ class ProfileScreen extends StatelessWidget {
                       child: TextFormField(
                         enabled: istextfield,
                         controller: weightController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the weight';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           labelText: 'Weight',
                         ),

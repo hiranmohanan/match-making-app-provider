@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:match_making_test/provider/firebase_login_provider.dart';
 import 'package:match_making_test/firebase_options.dart';
 import 'package:match_making_test/provider/firebase_profile_fetch_provider.dart';
+import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/screens/home/homeScreen.dart';
 import 'package:match_making_test/screens/login/loginScreen.dart';
 import 'package:match_making_test/service%20locator.dart';
@@ -51,7 +52,10 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<ProfileFetchProvider>(
             create: (_) => ProfileFetchProvider(),
-          )
+          ),
+          ChangeNotifierProvider<ProfileFilterProvider>(
+            create: (_) => ProfileFilterProvider(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

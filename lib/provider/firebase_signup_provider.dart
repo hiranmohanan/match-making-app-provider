@@ -15,6 +15,13 @@ class FirebaseSignupProvider extends ChangeNotifier {
   String _responce = '';
   bool _isloading = false;
   String? _validatormessage;
+  bool _isSecure = true;
+  int? _gender;
+  UserModel _usermodel = UserModel();
+  TextEditingController _emailcontroller = TextEditingController();
+  TextEditingController _passwordcontroller = TextEditingController();
+  TextEditingController _namecontroller = TextEditingController();
+  TextEditingController _phonecontroller = TextEditingController();
   bool get isUserLoggedIn => _isUserLoggedIn;
   String get email => _email;
   String get password => _password;
@@ -22,6 +29,13 @@ class FirebaseSignupProvider extends ChangeNotifier {
   String get responce => _responce;
   bool get isloading => _isloading;
   String? get validator => _validatormessage;
+  bool get issecurefont => _isSecure;
+  int? get gender => _gender;
+  UserModel get usermodel => _usermodel;
+  TextEditingController get emailcontroller => _emailcontroller;
+  TextEditingController get passwordcontroller => _passwordcontroller;
+  TextEditingController get namecontroller => _namecontroller;
+  TextEditingController get phonecontroller => _phonecontroller;
 
   void setUserLoggedIn(bool value) {
     _isUserLoggedIn = value;
@@ -47,6 +61,8 @@ class FirebaseSignupProvider extends ChangeNotifier {
     _isUserLoggedIn = false;
     _email = '';
     _password = '';
+    _usermodel = UserModel();
+    setGender(null);
     notifyListeners();
   }
 
@@ -81,30 +97,52 @@ class FirebaseSignupProvider extends ChangeNotifier {
   }
 
   void setValidator() {
-    if (_name.isEmpty) {
+    if (_usermodel.name == null) {
       _validatormessage = 'Please enter name';
-    } else if (_email.isEmpty) {
+    } else if (_usermodel.email == null) {
       _validatormessage = 'Please enter the email';
-    } else if (!_email.contains('@')) {
+    } else if (!_usermodel.email!.contains('@')) {
       _validatormessage = 'Please enter a valid email';
-    } else if (!_email.contains('.')) {
+    } else if (!_usermodel.email!.contains('.')) {
       _validatormessage = 'Please enter a valid email';
-    } else if (_password.isEmpty) {
-      _validatormessage = 'Please enter the password';
     } else if (_password.isEmpty) {
       _validatormessage = 'Please enter the password';
     } else if (_password.length < 8) {
       _validatormessage = 'Password should be atleast 8 characters';
+    } else if (_usermodel.gender == null) {
+      _validatormessage = 'Please select Your Gender';
     } else {
       _validatormessage = null;
     }
     notifyListeners();
   }
 
+  void setisSecure(bool value) {
+    _isSecure = value;
+    notifyListeners();
+  }
+
+  void setGender(int? gender) {
+    _gender = gender;
+    notifyListeners();
+  }
+
+  void setusermodel(UserModel value) {
+    _usermodel = UserModel(
+      uid: value.uid,
+      name: value.name,
+      email: value.email,
+      phone: value.phone,
+      gender: value.gender,
+    );
+    notifyListeners();
+  }
+
   Future<void> signUp() async {
     setLoading(true);
+
     final responce = await firebaseSignup(
-      email: _email,
+      user: _usermodel,
       password: _password,
     );
     if (kDebugMode) {
@@ -112,7 +150,7 @@ class FirebaseSignupProvider extends ChangeNotifier {
     }
     if (responce != null) {
       if (responce == 'Signed up') {
-        createdbandstore(name: _name, email: _email);
+        createdbandstore(user: _usermodel);
         SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
         setUserLoggedIn(true);
         setLoading(false);
@@ -130,14 +168,23 @@ class FirebaseSignupProvider extends ChangeNotifier {
   }
 }
 
-createdbandstore({required String name, required String email}) async {
+createdbandstore({required UserModel user}) async {
   if (kDebugMode) {
     print('=======================creating user in database');
     print('uid: ${FirebaseAuth.instance.currentUser!.uid}');
   }
   await createUserInDatabase(UserModel(
     uid: FirebaseAuth.instance.currentUser!.uid,
-    name: name,
-    email: email,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    gender: user.gender,
+    city: user.city,
+    state: user.state,
+    family: user.family,
+    height: user.height,
+    weight: user.weight,
+    house: user.house,
+    profilePic: user.profilePic,
   ));
 }
