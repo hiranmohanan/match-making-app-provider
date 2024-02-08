@@ -1,49 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 
 import '../../UI Elements/drawer.dart';
+import '../../services/services_getit.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppServices _appservices = GetIt.instance<AppServices>();
+    _appservices.setCurrentNavTab(2);
+    _appservices.setCurrentDrawer(2);
     var searchcontroller = TextEditingController();
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 2,
-          onTap: (value) {
-            if (value == 0) {
-              Navigator.pushNamed(context, '/home');
-            } else if (value == 1) {
-              Navigator.pushNamed(context, '/profile');
-            } else if (value == 2) {
-              Navigator.pushNamed(context, '/search');
-            }
-          },
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-                activeIcon: Icon(Icons.home_outlined)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-                activeIcon: Icon(Icons.person_outlined)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-                activeIcon: Icon(Icons.search_outlined)),
-          ],
-        ),
+        bottomNavigationBar: const BottomNavBr(),
         appBar: AppBar(
           title: const Text('Search'),
         ),
-        drawer: const AppDrawerCommon(
-          index: 2,
-        ),
+        drawer: const AppDrawerCommon(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(

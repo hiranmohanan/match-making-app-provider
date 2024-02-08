@@ -22,11 +22,11 @@ beforeStartUp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await serviceLocator();
 }
 
 void main() {
   beforeStartUp();
+  serviceLocator();
   runApp(const MyApp());
 }
 

@@ -1,166 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../UI Elements/bottomNavBar.dart';
 import '../../UI Elements/drawer.dart';
 import '../../provider/firebase_profile_fetch_provider.dart';
+import '../../services/services_getit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileFetchProvider>(context, listen: false);
-    provider.fetchProfile();
+    final AppServices _appservices = GetIt.instance<AppServices>();
+    final provider = Provider.of<ProfileFetchProvider>(context, listen: true);
+    TextEditingController nameController =
+        TextEditingController(text: provider.userProfile.name ?? '');
+    TextEditingController heightController =
+        TextEditingController(text: provider.userProfile.height);
+    TextEditingController weightController =
+        TextEditingController(text: provider.userProfile.weight);
+    TextEditingController houseController =
+        TextEditingController(text: provider.userProfile.house ?? '');
+    TextEditingController cityController =
+        TextEditingController(text: provider.userProfile.city ?? '');
+    TextEditingController stateController =
+        TextEditingController(text: provider.userProfile.state ?? '');
+    TextEditingController familyController =
+        TextEditingController(text: provider.userProfile.family ?? '');
+    bool istextfield = provider.istextfalse;
+    _appservices.setCurrentNavTab(1);
+    _appservices.setCurrentDrawer(1);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          if (value == 0) {
-            Navigator.pushNamed(context, '/home');
-          } else if (value == 1) {
-            Navigator.pushNamed(context, '/profile');
-          } else if (value == 2) {
-            Navigator.pushNamed(context, '/search');
-          }
-        },
-        currentIndex: 1,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              activeIcon: Icon(Icons.home_outlined)),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              activeIcon: Icon(Icons.person_outlined)),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-              activeIcon: Icon(Icons.search_outlined)),
-        ],
-      ),
-      drawer: const AppDrawerCommon(
-        index: 1,
-      ),
-      body: Center(
-          child: Container(
-        height: 90.h,
-        margin: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
-                width: 30.h,
-                child: const FlutterLogo(),
-              ),
-              vSizedBox1,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  suffixIcon: Icon(Icons.edit),
-                ),
-              ),
-              vSizedBox1,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Height',
-                  suffixIcon: Icon(Icons.edit),
-                ),
-              ),
-              vSizedBox1,
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Weight',
-                  suffixIcon: Icon(Icons.edit),
-                ),
-              ),
-              vSizedBox1,
-              ExpansionTile(
-                  title: const Text('Address'),
-                  childrenPadding: const EdgeInsets.all(10),
-                  tilePadding: const EdgeInsets.all(10),
-                  maintainState: true,
+      bottomNavigationBar: const BottomNavBr(),
+      drawer: const AppDrawerCommon(),
+      body: provider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: Container(
+              height: 90.h,
+              margin: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'House Name/Number',
-                        suffixIcon: Icon(Icons.edit),
+                    Center(
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                              radius: 20.w, child: const FlutterLogo()),
+                          istextfield
+                              ? InkWell(
+                                  borderRadius: BorderRadius.circular(20.w),
+                                  onTap: () {
+                                    provider.setprofilePic();
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 20.w,
+                                    backgroundColor:
+                                        Colors.black.withOpacity(0.5),
+                                    foregroundColor: Colors.transparent,
+                                    child: const Text(
+                                        'Tap Here To Edit Profile Picture',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: KConstantColors.dimWhite,
+                                        )),
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
                     ),
                     vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Street',
-                        suffixIcon: Icon(Icons.edit),
-                      ),
-                    ),
+                    istextfield
+                        ? Padding(
+                            padding: EdgeInsets.all(vBox1),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                provider.saveUserModel(
+                                  name: nameController.text,
+                                  height: heightController.text,
+                                  weight: weightController.text,
+                                  house: houseController.text,
+                                  city: cityController.text,
+                                  state: stateController.text,
+                                  family: familyController.text,
+                                );
+                                provider.setistextfalse(!istextfield);
+                              },
+                              child: const Text('Save Changes'),
+                            ),
+                          )
+                        : const SizedBox(),
+                    istextfield
+                        ? const SizedBox()
+                        : Padding(
+                            padding: EdgeInsets.all(vBox1),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  provider.setistextfalse(!istextfield);
+                                },
+                                child: const Text('Edit Profile')),
+                          ),
                     vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'City',
-                        suffixIcon: Icon(Icons.edit),
+
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        controller: nameController,
+                        enabled: istextfield,
+                        decoration: const InputDecoration(
+                          labelText: 'Name',
+                        ),
                       ),
                     ),
-                    vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'State',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.height == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: heightController,
+                        decoration: const InputDecoration(
+                          labelText: 'Height',
+                        ),
                       ),
                     ),
-                    vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Country',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.weight == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: weightController,
+                        decoration: const InputDecoration(
+                          labelText: 'Weight',
+                        ),
                       ),
                     ),
-                    vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Pincode',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.house == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: houseController,
+                        decoration: const InputDecoration(
+                          labelText: 'House Name/Number',
+                        ),
                       ),
                     ),
-                  ]),
-              ExpansionTile(
-                  title: const Text('Family Members'),
-                  childrenPadding: const EdgeInsets.all(10),
-                  tilePadding: const EdgeInsets.all(10),
-                  maintainState: true,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.city == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: cityController,
+                        decoration: const InputDecoration(
+                          labelText: 'City',
+                        ),
                       ),
                     ),
-                    vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Age',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.state == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: stateController,
+                        decoration: const InputDecoration(
+                          labelText: 'State',
+                        ),
                       ),
                     ),
-                    vSizedBox1,
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Relation',
-                        suffixIcon: Icon(Icons.edit),
+                    // provider.userProfile.family == null
+                    //     ? const SizedBox()
+                    //     :
+                    Padding(
+                      padding: EdgeInsets.all(vBox1),
+                      child: TextFormField(
+                        enabled: istextfield,
+                        controller: familyController,
+                        decoration: const InputDecoration(
+                          labelText: 'Family Information',
+                        ),
                       ),
                     ),
-                  ])
-            ],
-          ),
-        ),
-      )),
+                    vSizedBox2,
+                  ],
+                ),
+              ),
+            )),
     );
   }
 }

@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateToNextScreen() async {
     // Simulate some delay before navigating to the next screen
-
+    await Future.delayed(const Duration(seconds: 2));
     // Determine which screen to navigate to based on some condition
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     final String? uid = sharedPrefs.getString('uid');

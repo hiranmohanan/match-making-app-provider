@@ -129,6 +129,12 @@ ThemeData lightTheme = ThemeData(
       fontWeight: KLightStyle.textFieldTextFontWeight,
       fontSize: FontSize.kReguler,
     ),
+    disabledBorder: OutlineInputBorder(
+      gapPadding: 5,
+      borderSide: const BorderSide(
+          color: KConstantColors.textColor, width: 2, style: BorderStyle.solid),
+      borderRadius: BorderRadius.circular(5),
+    ),
   ),
   expansionTileTheme: const ExpansionTileThemeData(
     iconColor: KLightStyle.primaryTextColor,

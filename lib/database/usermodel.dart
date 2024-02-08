@@ -4,22 +4,25 @@ class UserModel {
   String? email;
   String? profilePic;
   String? phone;
-  String? address;
-  String? age;
-  String? weight;
   String? height;
-  String? acctype;
-  UserModel(
-      {this.uid,
-      this.name,
-      this.email,
-      this.profilePic,
-      this.phone,
-      this.address,
-      this.age,
-      this.weight,
-      this.height,
-      this.acctype});
+  String? weight;
+  String? house;
+  String? city;
+  String? state;
+  String? family;
+  UserModel({
+    this.uid,
+    this.name,
+    this.email,
+    this.profilePic,
+    this.phone,
+    this.height,
+    this.weight,
+    this.house,
+    this.city,
+    this.state,
+    this.family,
+  });
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -27,11 +30,12 @@ class UserModel {
       'email': email,
       'profilePic': profilePic,
       'phone': phone,
-      'address': address,
-      'age': age,
-      'weight': weight,
       'height': height,
-      'acctype': acctype,
+      'weight': weight,
+      'house': house,
+      'city': city,
+      'state': state,
+      'family': family,
     };
   }
 
@@ -42,11 +46,12 @@ class UserModel {
       email: map['email'],
       profilePic: map['profilePic'],
       phone: map['phone'],
-      address: map['address'],
-      age: map['age'],
-      weight: map['weight'],
       height: map['height'],
-      acctype: map['acctype'],
+      weight: map['weight'],
+      house: map['house'],
+      city: map['city'],
+      state: map['state'],
+      family: map['family'],
     );
   }
 }
