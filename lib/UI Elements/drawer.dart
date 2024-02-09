@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/provider/firebase_signout_provider.dart';
+import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:match_making_test/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/firebase_profile_fetch_provider.dart';
+import '../provider/firebase_storage_picture.dart';
 import '../services/services_getit.dart';
 
 class AppDrawerCommon extends StatefulWidget {
@@ -65,9 +68,12 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
               : ListTile(
                   title: const Text('Home'),
                   onTap: () {
+                    final provider = Provider.of<ProfileFilterProvider>(context,
+                        listen: false);
+                    provider.fetchProfile();
                     _appservices.setCurrentNavTab(0);
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushReplacementNamed(context, '/home');
                   },
                 ),
           _appservices.getCurrentDrawer() == 1
@@ -75,11 +81,15 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
               : ListTile(
                   title: const Text('Profile'),
                   onTap: () {
-                    Provider.of<ProfileFetchProvider>(context, listen: false)
-                        .fetchProfile();
+                    final provider = Provider.of<ProfileFetchProvider>(context,
+                        listen: false);
+
+                    provider.fetchProfile();
+                    Provider.of<FirebaseStorageProvider>(context, listen: false)
+                        .downloadFile(FirebaseAuth.instance.currentUser!.uid);
                     _appservices.setCurrentNavTab(1);
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, '/profile');
+                    Navigator.pushReplacementNamed(context, '/profile');
                   },
                 ),
           _appservices.getCurrentDrawer() == 2
@@ -87,9 +97,15 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
               : ListTile(
                   title: const Text('Search'),
                   onTap: () {
+                    final provider = Provider.of<ProfileFilterProvider>(context,
+                        listen: false);
+                    provider.fetchProfile();
+                    provider.searchloader();
+
                     _appservices.setCurrentNavTab(2);
+
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, '/search');
+                    Navigator.pushReplacementNamed(context, '/search');
                   },
                 ),
           ListTile(

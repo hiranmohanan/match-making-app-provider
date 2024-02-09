@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/firebase_profile_fetch_provider.dart';
+import '../provider/firebase_storage_picture.dart';
 import '../services/services_getit.dart';
 
 class BottomNavBr extends StatelessWidget {
@@ -18,13 +20,16 @@ class BottomNavBr extends StatelessWidget {
           return;
         } else {
           if (value == 0) {
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/home');
           } else if (value == 1) {
+            Provider.of<FirebaseStorageProvider>(context, listen: false)
+                .downloadFile(FirebaseAuth.instance.currentUser!.uid)
+                .then((value) => null);
             Provider.of<ProfileFetchProvider>(context, listen: false)
                 .fetchProfile();
-            Navigator.pushNamed(context, '/profile');
+            Navigator.pushReplacementNamed(context, '/profile');
           } else if (value == 2) {
-            Navigator.pushNamed(context, '/search');
+            Navigator.pushReplacementNamed(context, '/search');
           }
         }
       },

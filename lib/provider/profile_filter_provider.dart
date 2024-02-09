@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/database/usermodel.dart';
@@ -7,12 +8,14 @@ class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _femaleProfile;
   List<UserModel>? _fullProfile;
   List<UserModel>? _searchProfile;
+  TextEditingController _searchcontroller = TextEditingController();
   bool _isLoading = false;
 
   List<UserModel>? get maleProfile => _maleProfile;
   List<UserModel>? get femaleProfile => _femaleProfile;
   List<UserModel>? get fullProfile => _fullProfile;
   List<UserModel>? get searchProfile => _searchProfile;
+  TextEditingController get searchcontroller => _searchcontroller;
 
   bool get isLoading => _isLoading;
 

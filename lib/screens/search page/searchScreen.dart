@@ -5,6 +5,7 @@ import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../UI Elements/drawer.dart';
 import '../../services/services_getit.dart';
@@ -15,13 +16,13 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppServices _appservices = GetIt.instance<AppServices>();
-    final provider = Provider.of<ProfileFilterProvider>(context, listen: false);
+    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
     _appservices.setCurrentNavTab(2);
     _appservices.setCurrentDrawer(2);
 
-    var searchcontroller = TextEditingController();
     return RefreshIndicator(
       onRefresh: () async {
+        provider.searchcontroller.clear();
         provider.searchloader();
       },
       child: Scaffold(
@@ -38,7 +39,7 @@ class SearchScreen extends StatelessWidget {
                   delegate: SliverChildListDelegate(
                     [
                       SearchBar(
-                        onSubmitted: (value) {
+                        onChanged: (value) {
                           if (provider.fullProfile != null) {
                             if (value.isEmpty) {
                               provider.setSearchprofiles(provider.fullProfile!);
@@ -65,7 +66,7 @@ class SearchScreen extends StatelessWidget {
                         //         }
                         //       })
                         // ],
-                        controller: searchcontroller,
+                        controller: provider.searchcontroller,
                         hintText: 'Search',
                       ),
                       vSizedBox1,
@@ -78,33 +79,7 @@ class SearchScreen extends StatelessWidget {
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => Dialog(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Text('Filter'),
-                                        vSizedBox1,
-                                        const Text('Filter by:'),
-                                        vSizedBox1,
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            ElevatedButton(
-                                                onPressed: () {},
-                                                child: const Text('Age')),
-                                            ElevatedButton(
-                                                onPressed: () {},
-                                                child: const Text('Location')),
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              child: const Text(''),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  builder: (context) => const Filter(),
                                 );
                               },
                               child: const Text('Filter'),
@@ -130,6 +105,51 @@ class SearchScreen extends StatelessWidget {
               ],
             ),
           )),
+    );
+  }
+}
+
+class Filter extends StatelessWidget {
+  const Filter({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: SizedBox(
+        height: 60.h,
+        width: 80.w,
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  const Text('Filter'),
+                  vSizedBox1,
+                  const Text('Filter by:'),
+                  vSizedBox1,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text('Age'),
+                      DropdownButtonFormField(
+                          items: [const DropdownMenuItem(child: Text("1"))],
+                          onChanged: (val) {}),
+                      ElevatedButton(
+                          onPressed: () {}, child: const Text('Location')),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text(''),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
