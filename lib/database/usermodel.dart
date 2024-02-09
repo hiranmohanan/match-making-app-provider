@@ -11,6 +11,7 @@ class UserModel {
   dynamic state;
   dynamic family;
   int? gender;
+  int? age;
   UserModel({
     this.uid,
     this.name,
@@ -24,6 +25,7 @@ class UserModel {
     this.state,
     this.family,
     this.gender,
+    this.age,
   });
   Map<String, dynamic> toMap() {
     return {
@@ -38,7 +40,8 @@ class UserModel {
       'city': city,
       'state': state,
       'family': family,
-      'gender': gender
+      'gender': gender,
+      'age': age,
     };
   }
 
@@ -56,6 +59,7 @@ class UserModel {
       state: map['state'],
       family: map['family'],
       gender: map['gender'],
+      age: map['age'],
     );
   }
 }

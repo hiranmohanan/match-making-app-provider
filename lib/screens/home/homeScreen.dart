@@ -30,48 +30,45 @@ class HomeScreen extends StatelessWidget {
       ]),
       drawer: const AppDrawerCommon(),
       bottomNavigationBar: const BottomNavBr(),
-      body: Center(
-          child: ListView.builder(
-        itemBuilder: (context, index) {
-          return Card(
-              child: SizedBox(
-            height: 90.h,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 40.h,
-                    width: 30.h,
-                    child: const FlutterLogo(),
+      body: provider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: ListView.builder(
+              itemBuilder: (context, index) {
+                return Card(
+                    child: SizedBox(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40.h,
+                          width: 30.h,
+                          child: const FlutterLogo(),
+                        ),
+                        ListTile(
+                          title: const Text('Name'),
+                          subtitle:
+                              Text(provider.fullProfile?[index].name ?? ''),
+                        ),
+                        ListTile(
+                          title: const Text('Age'),
+                          subtitle: Text(
+                              provider.fullProfile?[index].age.toString() ??
+                                  ''),
+                        ),
+                        ListTile(
+                          title: const Text('Weight'),
+                          subtitle:
+                              Text(provider.fullProfile?[index].weight ?? ''),
+                        ),
+                      ],
+                    ),
                   ),
-                  const ListTile(
-                    title: Text('Name'),
-                    subtitle: Text('Null Man'),
-                  ),
-                  const ListTile(
-                    title: Text('Height'),
-                    subtitle: Text('22'),
-                  ),
-                  const ListTile(
-                    title: Text('Weight'),
-                    subtitle: Text('22'),
-                  ),
-                  const ListTile(
-                    title: Text('Address'),
-                    subtitle: Text('22'),
-                  ),
-                  const ListTile(
-                    title: Text('Family Members'),
-                    subtitle: Text('22'),
-                  ),
-                ],
-              ),
-            ),
-          ));
-        },
-        itemCount: 10,
-      )),
+                ));
+              },
+              itemCount: provider.fullProfile?.length ?? 0,
+            )),
     );
   }
 }

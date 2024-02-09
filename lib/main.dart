@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:match_making_test/provider/firebase_login_provider.dart';
 import 'package:match_making_test/firebase_options.dart';
 import 'package:match_making_test/provider/firebase_profile_fetch_provider.dart';
+import 'package:match_making_test/provider/firebase_storage_picture.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/screens/home/homeScreen.dart';
 import 'package:match_making_test/screens/login/loginScreen.dart';
@@ -28,6 +30,7 @@ beforeStartUp() async {
 void main() {
   beforeStartUp();
   serviceLocator();
+
   runApp(const MyApp());
 }
 
@@ -56,6 +59,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<ProfileFilterProvider>(
             create: (_) => ProfileFilterProvider(),
           ),
+          ChangeNotifierProvider<FirebaseStorageProvider>(
+            create: (_) => FirebaseStorageProvider(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -68,8 +74,21 @@ class MyApp extends StatelessWidget {
             '/splash': (context) => const SplashScreen(),
             '/login': (context) => const LoginPage(),
             '/register': (context) => const SignUpPage(),
-            '/home': (context) => const HomeScreen(),
-            '/profile': (context) => const ProfileScreen(),
+            '/home': (context) {
+              // Provider.of<ProfileFilterProvider>(context, listen: false)
+              //     .fetchProfile();
+              // Provider.of<ProfileFetchProvider>(context, listen: false)
+              //     .fetchProfile();
+
+              return const HomeScreen();
+            },
+            '/profile': (context) {
+              // Provider.of<FirebaseStorageProvider>(context, listen: false)
+              //     .downloadFile(FirebaseAuth.instance.currentUser!.uid).then((value) => null);
+              // Provider.of<ProfileFetchProvider>(context, listen: false)
+              //     .fetchProfile();
+              return const ProfileScreen();
+            },
             '/search': (context) => const SearchScreen(),
           },
         ),

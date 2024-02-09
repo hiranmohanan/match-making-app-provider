@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:match_making_test/provider/firebase_storage_picture.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../provider/firebase_profile_fetch_provider.dart';
+import '../../provider/profile_filter_provider.dart';
+import '../../services/permission_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,10 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    permissionhaldlerinit();
     navigateToNextScreen();
   }
 
   navigatetohome() {
+    Provider.of<ProfileFilterProvider>(context, listen: false).fetchProfile();
+    Provider.of<ProfileFetchProvider>(context, listen: false).fetchProfile();
+    Provider.of<FirebaseStorageProvider>(context, listen: false)
+        .getLocalImage();
+
     Navigator.pushReplacementNamed(context, '/home');
   }
 

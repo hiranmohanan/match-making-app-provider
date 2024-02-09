@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:match_making_test/provider/firebase_storage_picture.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +21,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppServices _appservices = GetIt.instance<AppServices>();
     final provider = Provider.of<ProfileFetchProvider>(context, listen: true);
+    final pictureprovider =
+        Provider.of<FirebaseStorageProvider>(context, listen: true);
     TextEditingController nameController =
         TextEditingController(text: provider.userProfile.name ?? '');
     TextEditingController heightController =
@@ -53,26 +59,46 @@ class ProfileScreen extends StatelessWidget {
                     Center(
                       child: Stack(
                         children: [
-                          CircleAvatar(
-                              radius: 20.w, child: const FlutterLogo()),
+                          pictureprovider.fileout == null
+                              ? CircleAvatar(
+                                  radius: 20.w,
+                                  child: FlutterLogo(
+                                    size: 20.w,
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  radius: 20.w,
+                                  backgroundImage: Image.file(
+                                    File(pictureprovider.fileout!),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const FlutterLogo();
+                                    },
+                                  ).image,
+                                ),
                           istextfield
                               ? InkWell(
                                   borderRadius: BorderRadius.circular(20.w),
                                   onTap: () {
-                                    provider.setprofilePic();
+                                    pictureprovider.selectFile();
                                   },
-                                  child: CircleAvatar(
-                                    radius: 20.w,
-                                    backgroundColor:
-                                        Colors.black.withOpacity(0.5),
-                                    foregroundColor: Colors.transparent,
-                                    child: const Text(
-                                        'Tap Here To Edit Profile Picture',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: KConstantColors.dimWhite,
-                                        )),
-                                  ),
+                                  child: pictureprovider.file == null
+                                      ? CircleAvatar(
+                                          radius: 20.w,
+                                          backgroundColor:
+                                              Colors.black.withOpacity(0.5),
+                                          foregroundColor: Colors.transparent,
+                                          child: const Text(
+                                              'Tap Here To Edit Profile Picture',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: KConstantColors.dimWhite,
+                                              )),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 20.w,
+                                          backgroundImage: Image.file(File(
+                                                  pictureprovider.file!.path!))
+                                              .image),
                                 )
                               : const SizedBox(),
                         ],
@@ -95,6 +121,13 @@ class ProfileScreen extends StatelessWidget {
                                     state: stateController.text,
                                     family: familyController.text,
                                   );
+                                  if (pictureprovider.file != null) {
+                                    pictureprovider.uploadfile();
+                                    pictureprovider.downloadFile(
+                                        FirebaseAuth.instance.currentUser!.uid);
+
+                                    provider.fetchProfile();
+                                  }
                                   provider.setistextfalse(!istextfield);
                                 } else {
                                   showDialog(

@@ -78,11 +78,11 @@ class ProfileFetchProvider extends ChangeNotifier {
   }
 
   void validator() {
-    if (_userProfile.name!.isEmpty) {
+    if (_userProfile.name!.isNotEmpty) {
       _changedone = true;
-    } else if (_userProfile.height == null) {
+    } else if (_userProfile.height != null || _userProfile.height != 'null') {
       _changedone = true;
-    } else if (_userProfile.weight == null) {
+    } else if (_userProfile.weight != null || _userProfile.weight != 'null') {
       _changedone = true;
     } else {
       _istextfalse = false;
