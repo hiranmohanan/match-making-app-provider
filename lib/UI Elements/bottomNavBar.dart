@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +22,7 @@ class BottomNavBr extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (value == 1) {
             Provider.of<FirebaseStorageProvider>(context, listen: false)
-                .downloadFile(FirebaseAuth.instance.currentUser!.uid)
+                .downloadFile()
                 .then((value) => null);
             Provider.of<ProfileFetchProvider>(context, listen: false)
                 .fetchProfile();

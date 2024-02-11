@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/provider/firebase_signout_provider.dart';
@@ -86,7 +85,7 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
 
                     provider.fetchProfile();
                     Provider.of<FirebaseStorageProvider>(context, listen: false)
-                        .downloadFile(FirebaseAuth.instance.currentUser!.uid);
+                        .downloadFile();
                     _appservices.setCurrentNavTab(1);
                     Navigator.pop(context);
                     Navigator.pushReplacementNamed(context, '/profile');

@@ -12,12 +12,14 @@ class FirebaseStorageProvider extends ChangeNotifier {
   PlatformFile? _file;
   String? _imglink;
   String? _fileout;
+  String? _responcepath;
 
   bool get isImageUploading => _isImageUploading;
   String get imageUrl => _imageUrl;
   PlatformFile? get file => _file;
   String? get imagelink => _imglink;
   String? get fileout => _fileout;
+  String? get responcepath => _responcepath;
 
   void setImageUploading(bool value) {
     _isImageUploading = value;
@@ -43,8 +45,12 @@ class FirebaseStorageProvider extends ChangeNotifier {
     _fileout = val;
     notifyListeners();
   }
+  void setresponcepath(String? val) {
+    _responcepath = val;
+    notifyListeners();
+  }
 
-  void getLocalImage() async {
+  Future<void> getLocalImage() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     final Directory location = await getApplicationDocumentsDirectory();
     final path = '${location.path}/$uid.jpg';
@@ -69,6 +75,7 @@ class FirebaseStorageProvider extends ChangeNotifier {
   }
 
   Future<void> uploadfile() async {
+    
     try {
       FireStorage().uploadFile(_file!, FirebaseAuth.instance.currentUser!.uid);
     } catch (e) {
@@ -78,12 +85,14 @@ class FirebaseStorageProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> downloadFile(String uid) async {
+  Future<void> downloadFile() async {
+String uid = FirebaseAuth.instance.currentUser!.uid;
+
     try {
-      final fileout = await FireStorage().downloadFile(uid);
-      getLocalImage();
-      if (kDebugMode) {
-        print('fileout==================== $fileout');
+      final fileout = await FireStorage().downloadFile(uid).then((value) => getLocalImage() as dynamic);
+      setresponcepath(fileout);
+      if(fileout==null){
+        setfileout(null);
       }
     } catch (e) {
       if (kDebugMode) {

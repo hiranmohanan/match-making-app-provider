@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:match_making_test/constants/constants.dart';
 import 'package:match_making_test/database/usermodel.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
 import 'package:match_making_test/shared/dimensions.dart';
@@ -57,7 +58,7 @@ class SignUpPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Signup'),
+        title: const Text(Ks.ksSignUp),
       ),
       body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -71,7 +72,7 @@ class SignUpPage extends StatelessWidget {
                     [
                       const Spacer(),
                       Center(
-                          child: Text('Sign Up',
+                          child: Text(Ks.ksSignUp,
                               style: KCustomTextStyle.kBold(
                                   context, 20, KConstantColors.greyTextColor))),
                       const Spacer(),
@@ -86,14 +87,14 @@ class SignUpPage extends StatelessWidget {
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter name';
+                                return Ks.ksEnterName;
                               }
                               return null;
                             },
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Name',
-                              hintText: 'Name',
+                              labelText: Ks.ksname,
+                              hintText: Ks.ksname,
                             ),
                           ),
                         ),
@@ -108,18 +109,18 @@ class SignUpPage extends StatelessWidget {
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter the email';
+                                return Ks.ksEnterEmail ;
                               } else if (!value.contains('@')) {
-                                return 'Please enter a valid email';
+                                return Ks.ksEnterValidEmail;
                               } else if (!value.contains('.')) {
-                                return 'Please enter a valid email';
+                                return Ks.ksEnterValidEmail;
                               }
                               return null;
                             },
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Email',
-                              hintText: 'Email',
+                              labelText: Ks.ksEmail,
+                              hintText: Ks.ksEmail,
                             ),
                           ),
                         ),
@@ -133,9 +134,9 @@ class SignUpPage extends StatelessWidget {
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter the phone number';
+                                return Ks.ksEnterPhoneNumber;
                               } else if (value.length < 10) {
-                                return 'Please enter a valid phone number';
+                                return Ks.ksEnterValidPhoneNumber;
                               }
                               return null;
                             },
@@ -150,8 +151,8 @@ class SignUpPage extends StatelessWidget {
                             ],
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Phone Number',
-                              labelText: 'Phone Number',
+                              hintText: Ks.ksPhoneNumber,
+                              labelText: Ks.ksPhoneNumber,
                             ),
                           ),
                         ),
@@ -165,9 +166,9 @@ class SignUpPage extends StatelessWidget {
                           obscureText: provider.issecurefont,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter the password';
+                              return Ks.ksEnterPassword;
                             } else if (value.length < 8) {
-                              return 'Password should be atleast 8 characters';
+                              return Ks.ksPasswordLength;
                             }
                             return null;
                           },
@@ -187,8 +188,8 @@ class SignUpPage extends StatelessWidget {
                                       : const Icon(Icons.visibility_off)),
                             ),
                             border: const OutlineInputBorder(),
-                            hintText: 'Password',
-                            labelText: 'Password',
+                            hintText: Ks.ksPassword,
+                            labelText: Ks.ksPassword,
                           ),
                         ),
                       ),
@@ -197,13 +198,13 @@ class SignUpPage extends StatelessWidget {
                         child: SizedBox(
                           height: 60,
                           child: DropdownButtonFormField(
-                              hint: const Text('Select'),
+                              hint: const Text(Ks.ksSelect),
                               value: provider.gender,
                               items: const [
                                 DropdownMenuItem(
-                                    value: 0, child: Text("Bride")),
+                                    value: 0, child: Text(Ks.ksBride)),
                                 DropdownMenuItem(
-                                    value: 1, child: Text("Groom")),
+                                    value: 1, child: Text(Ks.ksGroom)),
                               ],
                               onChanged: (val) {
                                 provider.setGender(val!);
@@ -212,7 +213,7 @@ class SignUpPage extends StatelessWidget {
                                   AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null) {
-                                  return 'Please select';
+                                  return Ks.ksSelect;
                                 }
                                 return null;
                               }),
@@ -223,7 +224,7 @@ class SignUpPage extends StatelessWidget {
                         onPressed: () {
                           signup();
                         },
-                        child: const Text('Signup'),
+                        child: const Text(Ks.ksSignUp),
                       ),
                       const Spacer()
                     ],

@@ -19,15 +19,14 @@ import 'screens/search page/searchScreen.dart';
 import 'screens/signup/signuppage.dart';
 import 'screens/splash screen/splashScreen.dart';
 
-beforeStartUp() async {
+// Starting the application with void main
+
+Future<void> main() async {
+  // before the app staring we initialize the firebase core and set our options for it
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-}
-
-void main() {
-  beforeStartUp();
   serviceLocator();
 
   runApp(const MyApp());

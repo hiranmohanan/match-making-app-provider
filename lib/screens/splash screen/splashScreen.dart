@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:match_making_test/provider/firebase_storage_picture.dart';
 import 'package:provider/provider.dart';
@@ -51,10 +52,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+    return Scaffold(
+      body: StreamBuilder<User?>(
+  stream: FirebaseAuth.instance.authStateChanges(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.active) {
+      User? user = snapshot.data;
+      if (user == null) {
+        return const Center(child: Text('User is currently signed out!'));
+      } else {
+        return const Center(child: Text('User is signed in!'));
+      }
+    }
+    return const Center(child: CircularProgressIndicator());
+  },
+)
+,
     );
   }
 }

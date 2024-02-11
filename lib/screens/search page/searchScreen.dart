@@ -70,6 +70,21 @@ class SearchScreen extends StatelessWidget {
                         hintText: 'Search',
                       ),
                       vSizedBox1,
+                      // ExpansionTile(
+                      //     children: [],
+                      //     title: const Text('Filter'),
+                      //     trailing: ElevatedButton(
+                      //       onPressed: () {},
+                      //       child: ElevatedButton(
+                      //         onPressed: () {
+                      //           // showDialog(
+                      //           //   context: context,
+                      //           //   builder: (context) => const Filter(),
+                      //           // );
+                      //         },
+                      //         child: const Text('Filter'),
+                      //       ),
+                      //     )),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

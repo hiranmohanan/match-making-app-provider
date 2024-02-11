@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:match_making_test/constants/constants.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
@@ -6,6 +7,7 @@ import 'package:match_making_test/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/firebase_login_provider.dart';
+import '../../provider/firebase_storage_picture.dart';
 
 TextEditingController emailcontroller = TextEditingController();
 TextEditingController passwordcontroller = TextEditingController();
@@ -18,6 +20,8 @@ class LoginPage extends StatelessWidget {
     final provider = Provider.of<FirebaseLoginProvider>(context, listen: true);
 
     logintohome() {
+      Provider.of<FirebaseStorageProvider>(context, listen: false)
+        .downloadFile();
       Navigator.pushNamed(context, '/home');
     }
 
@@ -60,7 +64,7 @@ class LoginPage extends StatelessWidget {
                 delegate: SliverChildListDelegate([
                   const Spacer(),
                   Center(
-                      child: Text('Login',
+                      child: Text(Ks.ksLogin,
                           style: KCustomTextStyle.kBold(
                               context, 20, KConstantColors.greyTextColor))),
                   vSizedBox1,
@@ -73,18 +77,18 @@ class LoginPage extends StatelessWidget {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the email';
+                            return Ks.ksEnterEmail;
                           } else if (!value.contains('@')) {
-                            return 'Please enter a valid email';
+                            return Ks.ksEnterValidEmail;
                           } else if (!value.contains('.')) {
-                            return 'Please enter a valid email';
+                            return Ks.ksEnterValidEmail;
                           }
 
                           return null;
                         },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Email',
+                          labelText: Ks.ksEmail,
                         ),
                       ),
                     ),
@@ -96,9 +100,9 @@ class LoginPage extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the password';
+                          return Ks.ksEnterPassword;
                         } else if (value.length < 8) {
-                          return 'Password should be atleast 8 characters';
+                          return Ks.ksPasswordLength;
                         }
                         return null;
                       },
@@ -112,7 +116,7 @@ class LoginPage extends StatelessWidget {
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off)),
                         border: const OutlineInputBorder(),
-                        labelText: 'Password',
+                        labelText: Ks.ksPassword,
                       ),
                     ),
                   ),
@@ -121,7 +125,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       login();
                     },
-                    child: const Text('Login'),
+                    child: const Text(Ks.ksLogin),
                   ),
                   vSizedBox0,
                   ElevatedButton(
@@ -131,7 +135,7 @@ class LoginPage extends StatelessWidget {
                           .clear();
                       Navigator.pushNamed(context, '/register');
                     },
-                    child: const Text('Register'),
+                    child: const Text(Ks.ksAlreadyHaveAnAccount),
                   ),
                   const Spacer(),
                   provider.isloading == true

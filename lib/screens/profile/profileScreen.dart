@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/provider/firebase_storage_picture.dart';
@@ -124,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
                                   if (pictureprovider.file != null) {
                                     pictureprovider.uploadfile();
                                     pictureprovider.downloadFile(
-                                        FirebaseAuth.instance.currentUser!.uid);
+                                        );
 
                                     provider.fetchProfile();
                                   }
