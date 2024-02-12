@@ -7,6 +7,7 @@ import '../provider/profile_filter_provider.dart';
 class AppServices {
   int currentNavTab = 0;
   int currentDrawer = 0;
+  int gender = 0;
 
   int getCurrentNavTab() {
     return currentNavTab;
@@ -32,5 +33,13 @@ class AppServices {
     Provider.of<ProfileFilterProvider>(context, listen: false).fetchProfile();
     Provider.of<FirebaseStorageProvider>(context, listen: false)
         .getLocalImage();
+  }
+
+  int getgender() {
+    return gender;
+  }
+
+  void setgender(int val) {
+    gender = val;
   }
 }

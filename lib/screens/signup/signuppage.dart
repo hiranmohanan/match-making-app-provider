@@ -46,6 +46,15 @@ class SignUpPage extends StatelessWidget {
         if (provider.isloading == true) {
         } else {
           if (provider.isUserLoggedIn == true) {
+            // boxuser.put(
+            //     'primaryuser',
+            //     UserModelHive(
+            //       uid: FirebaseAuth.instance.currentUser!.uid,
+            //       name: provider.usermodel.name,
+            //       email: provider.usermodel.email,
+            //       phone: provider.usermodel.phone,
+            //       gender: provider.gender,
+            //     ));
             logintohome();
           } else {
             showmessage(message: provider.responce);
@@ -63,7 +72,6 @@ class SignUpPage extends StatelessWidget {
       body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: CustomScrollView(
-              shrinkWrap: true,
 
               // mainAxisAlignment: MainAxisAlignment.center,
               slivers: [
@@ -109,7 +117,7 @@ class SignUpPage extends StatelessWidget {
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return Ks.ksEnterEmail ;
+                                return Ks.ksEnterEmail;
                               } else if (!value.contains('@')) {
                                 return Ks.ksEnterValidEmail;
                               } else if (!value.contains('.')) {

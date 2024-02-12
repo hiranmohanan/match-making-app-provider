@@ -22,8 +22,7 @@ class BottomNavBr extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (value == 1) {
             Provider.of<FirebaseStorageProvider>(context, listen: false)
-                .downloadFile()
-                .then((value) => null);
+                .downloadFile();
             Provider.of<ProfileFetchProvider>(context, listen: false)
                 .fetchProfile();
             Navigator.pushReplacementNamed(context, '/profile');

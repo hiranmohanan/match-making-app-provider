@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/shared/dimensions.dart';
+import 'package:match_making_test/shared/fonts.dart';
+import 'package:match_making_test/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -107,6 +110,9 @@ class SearchScreen extends StatelessWidget {
                         itemCount: provider.searchProfile?.length ?? 0,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          if (count == 0) {
+                            return const Center(child: Text('No data found'));
+                          }
                           return ListTile(
                             title: Text(provider.searchProfile![index].name!),
                             subtitle:
@@ -135,34 +141,28 @@ class Filter extends StatelessWidget {
       child: SizedBox(
         height: 60.h,
         width: 80.w,
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const Text('Filter'),
-                  vSizedBox1,
-                  const Text('Filter by:'),
-                  vSizedBox1,
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Text('Age'),
-                      DropdownButtonFormField(
-                          items: [const DropdownMenuItem(child: Text("1"))],
-                          onChanged: (val) {}),
-                      ElevatedButton(
-                          onPressed: () {}, child: const Text('Location')),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text(''),
-                      )
-                    ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  Text(
+                    "Filter",
                   ),
+                  Text("Age"),
+                  DropdownButtonFormField(items: [
+                    DropdownMenuItem(child: Text("under 20"), value: 20),
+                    DropdownMenuItem(
+                      child: Text("20-30"),
+                      value: 30,
+                    ),
+                  ], onChanged: (val) {}),
+                  Text('Height'),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

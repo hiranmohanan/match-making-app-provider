@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/database/usermodel.dart';
+import 'package:match_making_test/local%20data/boxes.dart';
 
 class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _maleProfile;
@@ -47,6 +48,14 @@ class ProfileFilterProvider extends ChangeNotifier {
   void setSearchprofiles(List<UserModel> userlist) {
     _searchProfile = userlist;
     notifyListeners();
+  }
+
+  void getCurrenthive() {
+    // boxuser.get('primaryuser');
+    // if (kDebugMode) {
+    //   print(
+    //       '=======================current hive user ${boxuser.get('primaryuser')}');
+    // }
   }
 
   Future<List<UserModel>?> fetchProfile() async {

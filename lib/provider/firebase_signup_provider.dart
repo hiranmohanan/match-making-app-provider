@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/firebase/firebase_signup.dart';
+import 'package:match_making_test/local%20data/boxes.dart';
 
 import '../database/usermodel.dart';
+import '../local data/hive.dart';
 import '../local data/shared_prefs.dart';
 
 class FirebaseSignupProvider extends ChangeNotifier {
@@ -151,7 +153,7 @@ class FirebaseSignupProvider extends ChangeNotifier {
     if (responce != null) {
       if (responce == 'Signed up') {
         createdbandstore(user: _usermodel);
-        SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
+        // SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
         setUserLoggedIn(true);
         setLoading(false);
       } else {
@@ -169,22 +171,28 @@ class FirebaseSignupProvider extends ChangeNotifier {
 }
 
 createdbandstore({required UserModel user}) async {
-  if (kDebugMode) {
-    print('=======================creating user in database');
-    print('uid: ${FirebaseAuth.instance.currentUser!.uid}');
-  }
+  // boxuser.put(
+  //     'primaryuser',
+  //     UserModelHive(
+  //       uid: user.uid,
+  //       name: user.name,
+  //       email: user.email,
+  //       profilePic: user.profilePic,
+  //       phone: user.phone,
+  //       height: user.height,
+  //       weight: user.weight,
+  //       house: user.house,
+  //       city: user.city,
+  //       state: user.state,
+  //       family: user.family,
+  //       gender: user.gender,
+  //       age: user.age,
+  //     ));
   await createUserInDatabase(UserModel(
     uid: FirebaseAuth.instance.currentUser!.uid,
     name: user.name,
     email: user.email,
     phone: user.phone,
     gender: user.gender,
-    city: user.city,
-    state: user.state,
-    family: user.family,
-    height: user.height,
-    weight: user.weight,
-    house: user.house,
-    profilePic: user.profilePic,
   ));
 }

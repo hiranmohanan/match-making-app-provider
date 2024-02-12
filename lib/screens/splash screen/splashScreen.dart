@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   navigatetohome() {
     Provider.of<ProfileFilterProvider>(context, listen: false).fetchProfile();
+    Provider.of<ProfileFilterProvider>(context, listen: false).getCurrenthive();
     Provider.of<ProfileFetchProvider>(context, listen: false).fetchProfile();
     Provider.of<FirebaseStorageProvider>(context, listen: false)
         .getLocalImage();
@@ -41,9 +42,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // Simulate some delay before navigating to the next screen
     await Future.delayed(const Duration(seconds: 2));
     // Determine which screen to navigate to based on some condition
-    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    final String? uid = sharedPrefs.getString('uid');
-    if (uid == null) {
+
+    if (FirebaseAuth.instance.currentUser == null) {
       navigatetologin();
     } else {
       navigatetohome();
@@ -54,20 +54,20 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-  stream: FirebaseAuth.instance.authStateChanges(),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.active) {
-      User? user = snapshot.data;
-      if (user == null) {
-        return const Center(child: Text('User is currently signed out!'));
-      } else {
-        return const Center(child: Text('User is signed in!'));
-      }
-    }
-    return const Center(child: CircularProgressIndicator());
-  },
-)
-,
+        // Hear we are checking is any user is logged in or not if not already logged in then goes to login page else home [age]
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            User? user = snapshot.data;
+            if (user == null) {
+              return const Center(child: Text('Welcome!'));
+            } else {
+              return const Center(child: Text('Welcome Back!'));
+            }
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

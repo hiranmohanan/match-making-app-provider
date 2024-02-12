@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:match_making_test/firebase/firebase_signin.dart';
-import 'package:match_making_test/local%20data/shared_prefs.dart';
 
 class FirebaseLoginProvider extends ChangeNotifier {
   bool _isUserLoggedIn = false;
@@ -105,7 +103,6 @@ class FirebaseLoginProvider extends ChangeNotifier {
     }
     if (responce != null) {
       if (responce == 'Signed in') {
-        SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
         setUserLoggedIn(true);
         loading(false);
       } else {

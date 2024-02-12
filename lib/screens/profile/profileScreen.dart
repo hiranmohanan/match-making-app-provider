@@ -23,19 +23,19 @@ class ProfileScreen extends StatelessWidget {
     final pictureprovider =
         Provider.of<FirebaseStorageProvider>(context, listen: true);
     TextEditingController nameController =
-        TextEditingController(text: provider.userProfile.name ?? '');
+        TextEditingController(text: provider.userProfile.name);
     TextEditingController heightController =
         TextEditingController(text: provider.userProfile.height.toString());
     TextEditingController weightController =
         TextEditingController(text: provider.userProfile.weight.toString());
     TextEditingController houseController =
-        TextEditingController(text: provider.userProfile.house ?? '');
+        TextEditingController(text: provider.userProfile.house);
     TextEditingController cityController =
-        TextEditingController(text: provider.userProfile.city ?? '');
+        TextEditingController(text: provider.userProfile.city);
     TextEditingController stateController =
-        TextEditingController(text: provider.userProfile.state ?? '');
+        TextEditingController(text: provider.userProfile.state);
     TextEditingController familyController =
-        TextEditingController(text: provider.userProfile.family ?? '');
+        TextEditingController(text: provider.userProfile.family);
     bool istextfield = provider.istextfalse;
     _appservices.setCurrentNavTab(1);
     _appservices.setCurrentDrawer(1);
@@ -109,8 +109,16 @@ class ProfileScreen extends StatelessWidget {
                             padding: EdgeInsets.all(vBox1),
                             child: ElevatedButton(
                               onPressed: () {
-                                provider.validator();
-                                if (provider.changedone == true) {
+                                provider.validator(
+                                  name: nameController.text,
+                                  height: heightController.text,
+                                  weight: weightController.text,
+                                  house: houseController.text,
+                                  city: cityController.text,
+                                  state: stateController.text,
+                                  family: familyController.text,
+                                );
+                                if (provider.istextfalse == false) {
                                   provider.saveUserModel(
                                     name: nameController.text,
                                     height: int.parse(heightController.text),
@@ -122,8 +130,7 @@ class ProfileScreen extends StatelessWidget {
                                   );
                                   if (pictureprovider.file != null) {
                                     pictureprovider.uploadfile();
-                                    pictureprovider.downloadFile(
-                                        );
+                                    pictureprovider.downloadFile();
 
                                     provider.fetchProfile();
                                   }

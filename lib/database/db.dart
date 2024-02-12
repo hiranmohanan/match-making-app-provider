@@ -84,17 +84,13 @@ Future<UserModel?> readUserInDatabase(String uid) async {
       gender: (snapshot.value as Map<dynamic, dynamic>)['gender'],
     );
 
-    if (kDebugMode) {
-      print('=======================user read: ${snapshot.value}');
-      print('object: ${user.toMap()}');
-    }
     return user;
   } else {
     if (kDebugMode) {
       print('=======================user not found');
     }
+    return null;
   }
-  return null;
 }
 
 Future<List<UserModel>?> getAllUser() async {

@@ -8,6 +8,7 @@ Future<String?> signIn(
         .signInWithEmailAndPassword(email: email, password: password);
     FirebaseLoginProvider().setUserLoggedIn(true);
     FirebaseLoginProvider().setResponce("Signed in");
+
     return "Signed in";
   } on FirebaseAuthException catch (e) {
     FirebaseLoginProvider().setResponce(e.message!);

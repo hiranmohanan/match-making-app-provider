@@ -45,18 +45,21 @@ class FirebaseStorageProvider extends ChangeNotifier {
     _fileout = val;
     notifyListeners();
   }
+
   void setresponcepath(String? val) {
     _responcepath = val;
     notifyListeners();
   }
 
   Future<void> getLocalImage() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    final Directory location = await getApplicationDocumentsDirectory();
-    final path = '${location.path}/$uid.jpg';
+    if (_fileout != null) {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final Directory location = await getApplicationDocumentsDirectory();
+      final path = '${location.path}/$uid.jpg';
 
-    _fileout = path;
-    notifyListeners();
+      _fileout = path;
+      notifyListeners();
+    }
   }
 
   Future<void> selectFile() async {
@@ -75,7 +78,6 @@ class FirebaseStorageProvider extends ChangeNotifier {
   }
 
   Future<void> uploadfile() async {
-    
     try {
       FireStorage().uploadFile(_file!, FirebaseAuth.instance.currentUser!.uid);
     } catch (e) {
@@ -86,17 +88,22 @@ class FirebaseStorageProvider extends ChangeNotifier {
   }
 
   Future<void> downloadFile() async {
-String uid = FirebaseAuth.instance.currentUser!.uid;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      final fileout = await FireStorage().downloadFile(uid).then((value) => getLocalImage() as dynamic);
-      setresponcepath(fileout);
-      if(fileout==null){
+      final fileout = await FireStorage().downloadFile(uid);
+
+      setfileout(fileout);
+      // if (fileout != null) {
+      //   setfileout(fileout);
+      // }
+      // setresponcepath(fileout);
+      // if (fileout == null) {
+      //   setfileout(null);
+      // }
+    } on FirebaseException catch (e) {
+      if (e.code == 'object-not-found') {
         setfileout(null);
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('exception cught on image fetch============================ $e');
       }
     }
   }

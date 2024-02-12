@@ -1,5 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:match_making_test/local%20data/boxes.dart';
+import 'package:match_making_test/local%20data/hive.dart';
 import 'package:match_making_test/provider/firebase_login_provider.dart';
 import 'package:match_making_test/firebase_options.dart';
 import 'package:match_making_test/provider/firebase_profile_fetch_provider.dart';
@@ -27,6 +31,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // initializing hive for local storage
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserModelAdapter());
+  // boxuser = await Hive.openBox<UserModelHive>('userBox');
+// dependency injuction using getIt is initializing
   serviceLocator();
 
   runApp(const MyApp());

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/provider/firebase_signout_provider.dart';
@@ -24,6 +26,8 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
   final AppServices _appservices = GetIt.instance<AppServices>();
   @override
   Widget build(BuildContext context) {
+    final pictureprovider =
+        Provider.of<FirebaseStorageProvider>(context, listen: true);
     return Drawer(
       shadowColor: KConstantColors.dimWhite,
       child: ListView(
@@ -34,18 +38,24 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
               child: Column(
                 children: [
                   vSizedBox2,
-                  const Align(
+                  Align(
                     alignment: Alignment.topLeft,
-                    child: CircleAvatar(
-                      backgroundColor: KConstantColors.extraFaintPurple,
-                      radius: 50,
-                      child: FlutterLogo(
-                        curve: Curves.bounceIn,
-                        size: 50,
-                        textColor: KConstantColors.dimWhite,
-                        style: FlutterLogoStyle.stacked,
-                      ),
-                    ),
+                    child: pictureprovider.fileout == null
+                        ? const CircleAvatar(
+                            radius: 50,
+                            child: FlutterLogo(
+                              size: 50,
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 50,
+                            backgroundImage: Image.file(
+                              File(pictureprovider.fileout!),
+                              errorBuilder: (context, error, stackTrace) {
+                                return const FlutterLogo();
+                              },
+                            ).image,
+                          ),
                   ),
                   ListTile(
                     // leading: Icon(Icons.person),
