@@ -24,6 +24,11 @@ class FirebaseSignupProvider extends ChangeNotifier {
   TextEditingController _passwordcontroller = TextEditingController();
   TextEditingController _namecontroller = TextEditingController();
   TextEditingController _phonecontroller = TextEditingController();
+  TextEditingController _heightcontroller = TextEditingController();
+  TextEditingController _weightcontroller = TextEditingController();
+  TextEditingController _housecontroller = TextEditingController();
+  TextEditingController _citycontroller = TextEditingController();
+  TextEditingController _statecontroller = TextEditingController();
   bool get isUserLoggedIn => _isUserLoggedIn;
   String get email => _email;
   String get password => _password;
@@ -38,6 +43,11 @@ class FirebaseSignupProvider extends ChangeNotifier {
   TextEditingController get passwordcontroller => _passwordcontroller;
   TextEditingController get namecontroller => _namecontroller;
   TextEditingController get phonecontroller => _phonecontroller;
+  TextEditingController get heightcontroller => _heightcontroller;
+  TextEditingController get weightcontroller => _weightcontroller;
+  TextEditingController get housecontroller => _housecontroller;
+  TextEditingController get statecontroller => _statecontroller;
+  TextEditingController get citycontroller => _citycontroller;
 
   void setUserLoggedIn(bool value) {
     _isUserLoggedIn = value;

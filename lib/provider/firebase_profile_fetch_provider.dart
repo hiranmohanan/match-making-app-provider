@@ -11,20 +11,22 @@ class ProfileFetchProvider extends ChangeNotifier {
   bool _isProfileFetched = false;
   bool _istextfalse = false;
   bool _changedone = false;
+  String? _fieldmessage;
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _heightController = TextEditingController();
-  final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _houseController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
-  final TextEditingController _familyController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _houseController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _familyController = TextEditingController();
 
   UserModel get userProfile => _userProfile;
   bool get isLoading => _isLoading;
   bool get isProfileFetched => _isProfileFetched;
   bool get istextfalse => _istextfalse;
   bool get changedone => _changedone;
+  String? get fieldmessage => _fieldmessage;
 
   TextEditingController get nameController => _nameController;
   TextEditingController get heightController => _heightController;
@@ -54,7 +56,16 @@ class ProfileFetchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setprofilePic() {}
+  void setchnagesdon(bool value) {
+    _changedone = value;
+    notifyListeners();
+  }
+
+  void setfieldmessage(String message) {
+    _fieldmessage = message;
+    notifyListeners();
+  }
+
   void saveUserModel({
     String? name,
     String? email,
@@ -68,10 +79,9 @@ class ProfileFetchProvider extends ChangeNotifier {
     String? family,
   }) {
     _userProfile = UserModel(
-      uid: _userProfile.uid,
       name: name,
-      height: height,
-      weight: weight,
+      height: int.parse(height.toString()),
+      weight: int.parse(weight.toString()),
       house: house,
       city: city,
       state: state,
@@ -104,11 +114,12 @@ class ProfileFetchProvider extends ChangeNotifier {
     String? family,
   }) {
     if (name == null || name == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter a name');
     } else if (height == null || height == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter the height');
     } else if (weight == null || weight == 'null') {
-      _istextfalse = true;
     } else if (house == null || house == 'null') {
       _istextfalse = true;
     } else if (city == null || city == 'null') {

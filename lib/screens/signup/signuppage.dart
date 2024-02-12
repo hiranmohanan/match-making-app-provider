@@ -227,6 +227,106 @@ class SignUpPage extends StatelessWidget {
                               }),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.all(vBox0),
+                        child: TextFormField(
+                          maxLines: 1,
+                          minLines: 1,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Ks.ksEnterHeight;
+                            }
+                            return null;
+                          },
+                          controller: provider.heightcontroller,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: Ks.ksHeight,
+                            labelText: Ks.ksHeight,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(vBox0),
+                        child: TextFormField(
+                          maxLines: 1,
+                          minLines: 1,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Ks.ksEnterWeight;
+                            }
+                            return null;
+                          },
+                          controller: provider.weightcontroller,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: Ks.ksWeight,
+                            labelText: Ks.ksWeight,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(vBox0),
+                        child: TextFormField(
+                          maxLines: 1,
+                          minLines: 1,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Ks.ksEnterHouse;
+                            }
+                            return null;
+                          },
+                          controller: provider.housecontroller,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: Ks.ksHouse,
+                            labelText: Ks.ksHouse,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(vBox0),
+                        child: TextFormField(
+                          maxLines: 1,
+                          minLines: 1,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Ks.ksEnterCity;
+                            }
+                            return null;
+                          },
+                          controller: provider.citycontroller,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: Ks.ksCity,
+                            labelText: Ks.ksCity,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(vBox0),
+                        child: TextFormField(
+                          maxLines: 1,
+                          minLines: 1,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Ks.ksEnterState;
+                            }
+                            return null;
+                          },
+                          controller: provider.statecontroller,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: Ks.ksState,
+                            labelText: Ks.ksState,
+                          ),
+                        ),
+                      ),
                       vSizedBox1,
                       ElevatedButton(
                         onPressed: () {
