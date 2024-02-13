@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:match_making_test/UI%20Elements/font_asowm.dart';
 import 'package:match_making_test/constants/constants.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
+import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:match_making_test/shared/text_styles.dart';
@@ -18,10 +20,11 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseLoginProvider>(context, listen: true);
+    final commonpadding = EdgeInsets.symmetric(vertical: vBox0);
 
     logintohome() {
       Provider.of<FirebaseStorageProvider>(context, listen: false)
-        .downloadFile();
+          .downloadFile();
       Navigator.pushNamed(context, '/home');
     }
 
@@ -43,6 +46,9 @@ class LoginPage extends StatelessWidget {
         if (provider.isloading == true) {
         } else {
           if (provider.isUserLoggedIn == true) {
+            provider.clearall();
+            Provider.of<ProfileFilterProvider>(context, listen: false)
+                .fetchProfile();
             logintohome();
           } else {
             showmessage(message: provider.responce);
@@ -69,7 +75,7 @@ class LoginPage extends StatelessWidget {
                               context, 20, KConstantColors.greyTextColor))),
                   vSizedBox1,
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: commonpadding,
                     child: SizedBox(
                       height: 60,
                       child: TextFormField(
@@ -88,13 +94,14 @@ class LoginPage extends StatelessWidget {
                         },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
+                          prefixIcon: Kappicons.ksiconemail,
                           labelText: Ks.ksEmail,
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: commonpadding,
                     child: TextFormField(
                       controller: passwordcontroller,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -108,13 +115,15 @@ class LoginPage extends StatelessWidget {
                       },
                       obscureText: provider.issecurefont,
                       decoration: InputDecoration(
+                        contentPadding: commonpadding,
+                        prefixIcon: Kappicons.ksiconpassword,
                         suffixIcon: IconButton(
                             onPressed: () {
                               provider.setsecurefont(!provider.issecurefont);
                             },
                             icon: provider.issecurefont
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off)),
+                                ? Kappicons.ksiconeye
+                                : Kappicons.ksiconeyeslash),
                         border: const OutlineInputBorder(),
                         labelText: Ks.ksPassword,
                       ),
@@ -132,7 +141,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       Provider.of<FirebaseSignupProvider>(context,
                               listen: false)
-                          .clear();
+                          .clearall();
                       Navigator.pushNamed(context, '/register');
                     },
                     child: const Text(Ks.ksAlreadyHaveAnAccount),

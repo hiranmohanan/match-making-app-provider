@@ -7,7 +7,6 @@ import 'package:match_making_test/local%20data/boxes.dart';
 
 import '../database/usermodel.dart';
 import '../local data/hive.dart';
-import '../local data/shared_prefs.dart';
 
 class FirebaseSignupProvider extends ChangeNotifier {
   bool _isUserLoggedIn = false;
@@ -20,15 +19,16 @@ class FirebaseSignupProvider extends ChangeNotifier {
   bool _isSecure = true;
   int? _gender;
   UserModel _usermodel = UserModel();
-  TextEditingController _emailcontroller = TextEditingController();
-  TextEditingController _passwordcontroller = TextEditingController();
-  TextEditingController _namecontroller = TextEditingController();
-  TextEditingController _phonecontroller = TextEditingController();
-  TextEditingController _heightcontroller = TextEditingController();
-  TextEditingController _weightcontroller = TextEditingController();
-  TextEditingController _housecontroller = TextEditingController();
-  TextEditingController _citycontroller = TextEditingController();
-  TextEditingController _statecontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _fnamecontroller = TextEditingController();
+  final TextEditingController _lnamecontroller = TextEditingController();
+  final TextEditingController _phonecontroller = TextEditingController();
+  final TextEditingController _heightcontroller = TextEditingController();
+  final TextEditingController _weightcontroller = TextEditingController();
+  final TextEditingController _housecontroller = TextEditingController();
+  final TextEditingController _citycontroller = TextEditingController();
+  final TextEditingController _statecontroller = TextEditingController();
   bool get isUserLoggedIn => _isUserLoggedIn;
   String get email => _email;
   String get password => _password;
@@ -41,7 +41,8 @@ class FirebaseSignupProvider extends ChangeNotifier {
   UserModel get usermodel => _usermodel;
   TextEditingController get emailcontroller => _emailcontroller;
   TextEditingController get passwordcontroller => _passwordcontroller;
-  TextEditingController get namecontroller => _namecontroller;
+  TextEditingController get fnamecontroller => _fnamecontroller;
+  TextEditingController get lnamecontroller => _lnamecontroller;
   TextEditingController get phonecontroller => _phonecontroller;
   TextEditingController get heightcontroller => _heightcontroller;
   TextEditingController get weightcontroller => _weightcontroller;
@@ -108,20 +109,37 @@ class FirebaseSignupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearall() {
+    _emailcontroller.clear();
+    _passwordcontroller.clear();
+    _fnamecontroller.clear();
+    _lnamecontroller.clear();
+    _phonecontroller.clear();
+    _heightcontroller.clear();
+    _weightcontroller.clear();
+    _housecontroller.clear();
+    _citycontroller.clear();
+    _statecontroller.clear();
+    _gender = null;
+    notifyListeners();
+  }
+
   void setValidator() {
-    if (_usermodel.name == null) {
-      _validatormessage = 'Please enter name';
-    } else if (_usermodel.email == null) {
+    if (_fnamecontroller.text == 'null') {
+      _validatormessage = 'Please enter first name';
+    } else if (_lnamecontroller.text == 'null') {
+      _validatormessage = 'Please enter last name';
+    } else if (_emailcontroller.text == 'null') {
       _validatormessage = 'Please enter the email';
-    } else if (!_usermodel.email!.contains('@')) {
+    } else if (!_emailcontroller.text.contains('@')) {
       _validatormessage = 'Please enter a valid email';
-    } else if (!_usermodel.email!.contains('.')) {
+    } else if (!_emailcontroller.text.contains('.')) {
       _validatormessage = 'Please enter a valid email';
-    } else if (_password.isEmpty) {
+    } else if (_passwordcontroller.text == 'null') {
       _validatormessage = 'Please enter the password';
-    } else if (_password.length < 8) {
+    } else if (_passwordcontroller.text.length < 8) {
       _validatormessage = 'Password should be atleast 8 characters';
-    } else if (_usermodel.gender == null) {
+    } else if (_gender == null) {
       _validatormessage = 'Please select Your Gender';
     } else {
       _validatormessage = null;
@@ -137,12 +155,16 @@ class FirebaseSignupProvider extends ChangeNotifier {
   void setGender(int? gender) {
     _gender = gender;
     notifyListeners();
+    if (kDebugMode) {
+      print('gender change $_gender');
+    }
   }
 
   void setusermodel(UserModel value) {
     _usermodel = UserModel(
       uid: value.uid,
-      name: value.name,
+      fname: value.fname,
+      lname: value.lname,
       email: value.email,
       phone: value.phone,
       gender: value.gender,
@@ -165,6 +187,7 @@ class FirebaseSignupProvider extends ChangeNotifier {
         createdbandstore(user: _usermodel);
         // SharedPrefs().setuid(FirebaseAuth.instance.currentUser!.uid);
         setUserLoggedIn(true);
+        clearall();
         setLoading(false);
       } else {
         _responce = responce;
@@ -181,28 +204,30 @@ class FirebaseSignupProvider extends ChangeNotifier {
 }
 
 createdbandstore({required UserModel user}) async {
-  // boxuser.put(
-  //     'primaryuser',
-  //     UserModelHive(
-  //       uid: user.uid,
-  //       name: user.name,
-  //       email: user.email,
-  //       profilePic: user.profilePic,
-  //       phone: user.phone,
-  //       height: user.height,
-  //       weight: user.weight,
-  //       house: user.house,
-  //       city: user.city,
-  //       state: user.state,
-  //       family: user.family,
-  //       gender: user.gender,
-  //       age: user.age,
-  //     ));
   await createUserInDatabase(UserModel(
     uid: FirebaseAuth.instance.currentUser!.uid,
-    name: user.name,
+    fname: user.fname,
+    lname: user.lname,
     email: user.email,
     phone: user.phone,
     gender: user.gender,
   ));
+  await boxuser.put(
+      'primaryuser',
+      UserModelHive(
+        uid: user.uid,
+        fname: user.fname,
+        lname: user.lname,
+        email: user.email,
+        profilePic: null,
+        phone: user.phone,
+        height: null,
+        weight: null,
+        house: null,
+        city: null,
+        state: null,
+        family: null,
+        gender: user.gender,
+        age: null,
+      ));
 }

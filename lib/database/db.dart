@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 
 import 'usermodel.dart';
 
 Future<void> createUserInDatabase(UserModel user) async {
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
   final DatabaseReference dbRef =
       FirebaseDatabase.instance.ref('userInfo').child('users/${user.uid}');
   if (kDebugMode) {
@@ -11,17 +13,11 @@ Future<void> createUserInDatabase(UserModel user) async {
   }
   try {
     await dbRef.set({
-      'uid': user.uid.toString(),
-      'name': user.name.toString(),
+      'uid': uid,
+      'fname': user.fname.toString(),
+      'lname': user.lname.toString(),
       'email': user.email.toString(),
-      'profilepic': user.profilePic.toString(),
       'phone': user.phone,
-      'height': user.height,
-      'weight': user.weight,
-      'house': user.house.toString(),
-      'city': user.city.toString(),
-      'state': user.state.toString(),
-      'family': user.family.toString(),
       'gender': user.gender,
     });
     if (kDebugMode) {
@@ -35,18 +31,16 @@ Future<void> createUserInDatabase(UserModel user) async {
 }
 
 Future<void> updateUserInformation(UserModel user) async {
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
   final DatabaseReference dbRef =
-      FirebaseDatabase.instance.ref('userInfo').child('users/${user.uid}');
+      FirebaseDatabase.instance.ref('userInfo').child('users/$uid');
   if (kDebugMode) {
     print('=======================user to be created: ${user.toMap()}');
   }
   try {
     await dbRef.update({
-      'uid': user.uid.toString(),
-      'name': user.name.toString(),
-      'email': user.email.toString(),
-      'profilepic': user.profilePic.toString(),
-      'phone': user.phone,
+      'fname': user.fname.toString(),
+      'lname': user.lname.toString(),
       'height': user.height,
       'weight': user.weight,
       'house': user.house.toString(),
@@ -71,7 +65,8 @@ Future<UserModel?> readUserInDatabase(String uid) async {
   if (snapshot.exists) {
     final UserModel user = UserModel(
       uid: (snapshot.value as Map<dynamic, dynamic>)['uid'],
-      name: (snapshot.value as Map<dynamic, dynamic>)['name'],
+      fname: (snapshot.value as Map<dynamic, dynamic>)['fname'],
+      lname: (snapshot.value as Map<dynamic, dynamic>)['lname'],
       email: (snapshot.value as Map<dynamic, dynamic>)['email'],
       profilePic: (snapshot.value as Map<dynamic, dynamic>)['profilepic'],
       phone: (snapshot.value as Map<dynamic, dynamic>)['phone'],
@@ -106,7 +101,8 @@ Future<List<UserModel>?> getAllUser() async {
     (snapshot.value as Map<dynamic, dynamic>).forEach((key, value) {
       final UserModel user = UserModel(
         uid: value['uid'],
-        name: value['name'],
+        fname: value['fname'],
+        lname: value['lname'],
         email: value['email'],
         profilePic: value['profilepic'],
         phone: value['phone'],

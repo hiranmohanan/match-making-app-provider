@@ -1,3 +1,3 @@
-// import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 
-// late Box boxuser;
+late Box boxuser;

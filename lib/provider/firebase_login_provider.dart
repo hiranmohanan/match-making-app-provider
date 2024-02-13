@@ -74,6 +74,17 @@ class FirebaseLoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearall() {
+    _isUserLoggedIn = false;
+    _email = '';
+    _password = '';
+    _responce = '';
+    _isloading = false;
+    _validatormessage = null;
+    _issecurefont = true;
+    notifyListeners();
+  }
+
   void setValidator() {
     if (_email.isEmpty) {
       _validatormessage = 'Please enter the email';

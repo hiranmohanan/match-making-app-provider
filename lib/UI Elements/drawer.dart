@@ -26,6 +26,7 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
   final AppServices _appservices = GetIt.instance<AppServices>();
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
     final pictureprovider =
         Provider.of<FirebaseStorageProvider>(context, listen: true);
     return Drawer(

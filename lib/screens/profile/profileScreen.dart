@@ -19,23 +19,42 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppServices _appservices = GetIt.instance<AppServices>();
+    final commonpadding = EdgeInsets.symmetric(vertical: vBox1);
     final provider = Provider.of<ProfileFetchProvider>(context, listen: true);
     final pictureprovider =
         Provider.of<FirebaseStorageProvider>(context, listen: true);
-    TextEditingController nameController =
-        TextEditingController(text: provider.userProfile.name);
-    TextEditingController heightController =
-        TextEditingController(text: provider.userProfile.height.toString());
-    TextEditingController weightController =
-        TextEditingController(text: provider.userProfile.weight.toString());
-    TextEditingController houseController =
-        TextEditingController(text: provider.userProfile.house);
-    TextEditingController cityController =
-        TextEditingController(text: provider.userProfile.city);
-    TextEditingController stateController =
-        TextEditingController(text: provider.userProfile.state);
-    TextEditingController familyController =
-        TextEditingController(text: provider.userProfile.family);
+    TextEditingController fnameController = TextEditingController(
+        text: provider.userProfile.fname == 'null'
+            ? null
+            : provider.userProfile.fname);
+    TextEditingController lnameController = TextEditingController(
+        text: provider.userProfile.lname == 'null'
+            ? null
+            : provider.userProfile.lname);
+    TextEditingController heightController = TextEditingController(
+        text: provider.userProfile.height.toString() == 'null'
+            ? null
+            : provider.userProfile.height.toString());
+    TextEditingController weightController = TextEditingController(
+        text: provider.userProfile.weight.toString() == 'null'
+            ? null
+            : provider.userProfile.weight.toString());
+    TextEditingController houseController = TextEditingController(
+        text: provider.userProfile.house == 'null'
+            ? null
+            : provider.userProfile.house);
+    TextEditingController cityController = TextEditingController(
+        text: provider.userProfile.city == 'null'
+            ? null
+            : provider.userProfile.city);
+    TextEditingController stateController = TextEditingController(
+        text: provider.userProfile.state == 'null'
+            ? null
+            : provider.userProfile.state);
+    TextEditingController familyController = TextEditingController(
+        text: provider.userProfile.family == 'null'
+            ? null
+            : provider.userProfile.family);
     bool istextfield = provider.istextfalse;
     _appservices.setCurrentNavTab(1);
     _appservices.setCurrentDrawer(1);
@@ -108,9 +127,10 @@ class ProfileScreen extends StatelessWidget {
                         ? Padding(
                             padding: EdgeInsets.all(vBox1),
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 provider.validator(
-                                  name: nameController.text,
+                                  fname: fnameController.text,
+                                  lname: lnameController.text,
                                   height: heightController.text,
                                   weight: weightController.text,
                                   house: houseController.text,
@@ -118,9 +138,10 @@ class ProfileScreen extends StatelessWidget {
                                   state: stateController.text,
                                   family: familyController.text,
                                 );
-                                if (provider.istextfalse == false) {
+                                if (provider.changedone == false) {
                                   provider.saveUserModel(
-                                    name: nameController.text,
+                                    fname: fnameController.text,
+                                    lname: lnameController.text,
                                     height: int.parse(heightController.text),
                                     weight: int.parse(weightController.text),
                                     house: houseController.text,
@@ -129,10 +150,10 @@ class ProfileScreen extends StatelessWidget {
                                     family: familyController.text,
                                   );
                                   if (pictureprovider.file != null) {
-                                    pictureprovider.uploadfile();
-                                    pictureprovider.downloadFile();
+                                    await pictureprovider.uploadfile();
+                                    await pictureprovider.downloadFile();
 
-                                    provider.fetchProfile();
+                                    await provider.fetchProfile();
                                   }
                                   provider.setistextfalse(!istextfield);
                                 } else {
@@ -141,8 +162,8 @@ class ProfileScreen extends StatelessWidget {
                                       builder: (context) {
                                         return AlertDialog(
                                           title: const Text('Alert'),
-                                          content: const Text(
-                                              'Please add required datas to save'),
+                                          content: Text(
+                                              'Please add required datas to save\n${provider.fieldmessage}'),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
@@ -171,18 +192,40 @@ class ProfileScreen extends StatelessWidget {
                     vSizedBox1,
 
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the name';
+                            return 'Please enter the first name';
                           }
                           return null;
                         },
-                        controller: nameController,
+                        controller: fnameController,
                         enabled: istextfield,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'Name',
+                          hintText: String.fromEnvironment(fnameController.text,
+                              defaultValue: 'Please provide first Name'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: commonpadding,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the last name';
+                          }
+                          return null;
+                        },
+                        controller: lnameController,
+                        enabled: istextfield,
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Name',
+                          hintText: String.fromEnvironment(lnameController.text,
+                              defaultValue: 'Please provide last Name'),
                         ),
                       ),
                     ),
@@ -190,7 +233,7 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: heightController,
@@ -201,8 +244,12 @@ class ProfileScreen extends StatelessWidget {
                           }
                           return null;
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Height',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: String.fromEnvironment(
+                              heightController.text,
+                              defaultValue: 'Please provide Height'),
                         ),
                       ),
                     ),
@@ -210,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: weightController,
@@ -221,8 +268,12 @@ class ProfileScreen extends StatelessWidget {
                           return null;
                         },
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Weight',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: String.fromEnvironment(
+                              weightController.text,
+                              defaultValue: 'Please provide Weight'),
                         ),
                       ),
                     ),
@@ -230,12 +281,15 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: houseController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: 'House Name/Number',
+                          hintText: String.fromEnvironment(houseController.text,
+                              defaultValue: 'Please provide House Name/Number'),
                         ),
                       ),
                     ),
@@ -243,11 +297,14 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: cityController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: String.fromEnvironment(cityController.text,
+                              defaultValue: 'Please provide City'),
                           labelText: 'City',
                         ),
                       ),
@@ -256,12 +313,15 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: stateController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'State',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: String.fromEnvironment(stateController.text,
+                              defaultValue: 'Please provide State'),
                         ),
                       ),
                     ),
@@ -269,12 +329,17 @@ class ProfileScreen extends StatelessWidget {
                     //     ? const SizedBox()
                     //     :
                     Padding(
-                      padding: EdgeInsets.all(vBox1),
+                      padding: commonpadding,
                       child: TextFormField(
                         enabled: istextfield,
                         controller: familyController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Family Information',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: String.fromEnvironment(
+                              familyController.text,
+                              defaultValue:
+                                  'Please provide Family Information'),
                         ),
                       ),
                     ),

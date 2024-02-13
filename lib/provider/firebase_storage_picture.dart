@@ -13,6 +13,8 @@ class FirebaseStorageProvider extends ChangeNotifier {
   String? _imglink;
   String? _fileout;
   String? _responcepath;
+  bool? _isloading;
+  List<String?>? _imgurl;
 
   bool get isImageUploading => _isImageUploading;
   String get imageUrl => _imageUrl;
@@ -20,6 +22,8 @@ class FirebaseStorageProvider extends ChangeNotifier {
   String? get imagelink => _imglink;
   String? get fileout => _fileout;
   String? get responcepath => _responcepath;
+  bool? get isloading => _isloading;
+  List<String?>? get imgurl => _imgurl;
 
   void setImageUploading(bool value) {
     _isImageUploading = value;
@@ -48,6 +52,16 @@ class FirebaseStorageProvider extends ChangeNotifier {
 
   void setresponcepath(String? val) {
     _responcepath = val;
+    notifyListeners();
+  }
+
+  void setisloading(bool? val) {
+    _isloading = val;
+    notifyListeners();
+  }
+
+  void setimgurl(String? val) {
+    _imgurl?.add(val);
     notifyListeners();
   }
 
@@ -106,5 +120,14 @@ class FirebaseStorageProvider extends ChangeNotifier {
         setfileout(null);
       }
     }
+  }
+
+  Future<void> getimagelink({required String uid}) async {
+    setisloading(true);
+    final responce = await FireStorage().getimagelink(uid: uid);
+    if (responce != null) {
+      imgurl?.add(responce);
+    }
+    setisloading(false);
   }
 }

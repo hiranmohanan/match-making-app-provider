@@ -123,4 +123,25 @@ class FireStorage {
     }
     return null;
   }
+
+  Future<String?> getimagelink({required String uid}) async {
+    final ref = storage.ref().child('profilepics/$uid.jpg');
+    late String url;
+    try {
+      await ref.getMetadata();
+      url = await ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      if (e.code == 'object-not-found') {
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('==================error in getting image link $e');
+      }
+
+      return null;
+    }
+    return null;
+  }
 }

@@ -6,7 +6,7 @@ part of 'hive.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserModelAdapter extends TypeAdapter<UserModelHive> {
+class UserModelHiveAdapter extends TypeAdapter<UserModelHive> {
   @override
   final int typeId = 0;
 
@@ -18,50 +18,53 @@ class UserModelAdapter extends TypeAdapter<UserModelHive> {
     };
     return UserModelHive(
       uid: fields[0] as String?,
-      name: fields[1] as String?,
-      email: fields[3] as String?,
-      profilePic: fields[4] as String?,
-      phone: fields[5] as int?,
-      height: fields[6] as int,
-      weight: fields[7] as int?,
-      house: fields[8] as String?,
-      city: fields[9] as String?,
-      state: fields[10] as String?,
-      family: fields[11] as String?,
-      gender: fields[12] as int?,
-      age: fields[2] as int?,
+      fname: fields[1] as String?,
+      lname: fields[2] as String?,
+      email: fields[4] as String?,
+      profilePic: fields[5] as String?,
+      phone: fields[6] as int?,
+      height: fields[7] as int?,
+      weight: fields[8] as int?,
+      house: fields[9] as String?,
+      city: fields[10] as String?,
+      state: fields[11] as String?,
+      family: fields[12] as String?,
+      gender: fields[13] as int?,
+      age: fields[3] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModelHive obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.fname)
       ..writeByte(2)
-      ..write(obj.age)
+      ..write(obj.lname)
       ..writeByte(3)
-      ..write(obj.email)
+      ..write(obj.age)
       ..writeByte(4)
-      ..write(obj.profilePic)
+      ..write(obj.email)
       ..writeByte(5)
-      ..write(obj.phone)
+      ..write(obj.profilePic)
       ..writeByte(6)
-      ..write(obj.height)
+      ..write(obj.phone)
       ..writeByte(7)
-      ..write(obj.weight)
+      ..write(obj.height)
       ..writeByte(8)
-      ..write(obj.house)
+      ..write(obj.weight)
       ..writeByte(9)
-      ..write(obj.city)
+      ..write(obj.house)
       ..writeByte(10)
-      ..write(obj.state)
+      ..write(obj.city)
       ..writeByte(11)
-      ..write(obj.family)
+      ..write(obj.state)
       ..writeByte(12)
+      ..write(obj.family)
+      ..writeByte(13)
       ..write(obj.gender);
   }
 
@@ -71,7 +74,7 @@ class UserModelAdapter extends TypeAdapter<UserModelHive> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserModelAdapter &&
+      other is UserModelHiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

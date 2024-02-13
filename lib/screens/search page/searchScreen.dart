@@ -50,7 +50,7 @@ class SearchScreen extends StatelessWidget {
                             provider.setSearchprofiles(
                               provider.fullProfile!
                                   .where((element) =>
-                                      element.name!.contains(value))
+                                      element.fname!.contains(value))
                                   .toList(),
                             );
                           }
@@ -114,7 +114,7 @@ class SearchScreen extends StatelessWidget {
                             return const Center(child: Text('No data found'));
                           }
                           return ListTile(
-                            title: Text(provider.searchProfile![index].name!),
+                            title: Text(provider.searchProfile![index].fname!),
                             subtitle:
                                 Text(provider.searchProfile![index].email!),
                           );

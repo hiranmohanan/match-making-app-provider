@@ -33,8 +33,8 @@ Future<void> main() async {
   );
   // initializing hive for local storage
   await Hive.initFlutter();
-  Hive.registerAdapter(UserModelAdapter());
-  // boxuser = await Hive.openBox<UserModelHive>('userBox');
+  Hive.registerAdapter(UserModelHiveAdapter());
+  boxuser = await Hive.openBox<UserModelHive>('userBox');
 // dependency injuction using getIt is initializing
   serviceLocator();
 

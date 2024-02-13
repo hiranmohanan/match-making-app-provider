@@ -8,44 +8,47 @@ class UserModelHive {
   final String? uid;
 
   @HiveField(1)
-  final String? name;
-
+  final String? fname;
   @HiveField(2)
-  final int? age;
+  final String? lname;
 
   @HiveField(3)
-  final String? email;
+  final int? age;
 
   @HiveField(4)
-  final String? profilePic;
+  final String? email;
 
   @HiveField(5)
-  final int? phone;
+  final String? profilePic;
 
   @HiveField(6)
-  final int? height;
+  final int? phone;
 
   @HiveField(7)
-  final int? weight;
+  final int? height;
 
   @HiveField(8)
-  final String? house;
+  final int? weight;
 
   @HiveField(9)
-  final String? city;
+  final String? house;
 
   @HiveField(10)
-  final String? state;
+  final String? city;
 
   @HiveField(11)
-  final String? family;
+  final String? state;
 
   @HiveField(12)
+  final String? family;
+
+  @HiveField(13)
   final int? gender;
 
   UserModelHive({
     this.uid,
-    this.name,
+    this.fname,
+    this.lname,
     this.email,
     this.profilePic,
     this.phone,

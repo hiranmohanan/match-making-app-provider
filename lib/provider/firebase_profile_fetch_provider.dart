@@ -5,7 +5,7 @@ import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/database/usermodel.dart';
 
 class ProfileFetchProvider extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   UserModel _userProfile = UserModel();
   bool _isLoading = false;
   bool _isProfileFetched = false;
@@ -61,13 +61,14 @@ class ProfileFetchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setfieldmessage(String message) {
+  void setfieldmessage(String? message) {
     _fieldmessage = message;
     notifyListeners();
   }
 
   void saveUserModel({
-    String? name,
+    String? fname,
+    String? lname,
     String? email,
     String? profilePic,
     int? phone,
@@ -79,7 +80,8 @@ class ProfileFetchProvider extends ChangeNotifier {
     String? family,
   }) {
     _userProfile = UserModel(
-      name: name,
+      fname: fname,
+      lname: lname,
       height: int.parse(height.toString()),
       weight: int.parse(weight.toString()),
       house: house,
@@ -105,7 +107,8 @@ class ProfileFetchProvider extends ChangeNotifier {
   }
 
   void validator({
-    String? name,
+    String? fname,
+    String? lname,
     String? height,
     String? weight,
     String? house,
@@ -113,23 +116,33 @@ class ProfileFetchProvider extends ChangeNotifier {
     String? state,
     String? family,
   }) {
-    if (name == null || name == 'null') {
+    if (fname == null || fname == 'null') {
       setchnagesdon(true);
-      setfieldmessage('please enter a name');
+      setfieldmessage('please enter a firs name');
+    } else if (lname == null || lname == 'null') {
+      setchnagesdon(true);
+      setfieldmessage('please enter a last name');
     } else if (height == null || height == 'null') {
       setchnagesdon(true);
       setfieldmessage('please enter the height');
     } else if (weight == null || weight == 'null') {
+      setchnagesdon(true);
+      setfieldmessage('please enter the weight');
     } else if (house == null || house == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter the house');
     } else if (city == null || city == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter the city');
     } else if (state == null || state == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter the state');
     } else if (family == null || family == 'null') {
-      _istextfalse = true;
+      setchnagesdon(true);
+      setfieldmessage('please enter the family');
     } else {
-      _istextfalse = false;
+      setchnagesdon(false);
+      setfieldmessage(null);
     }
     // if ( name != 'null') {
     //   _changedone = true;
@@ -153,6 +166,7 @@ class ProfileFetchProvider extends ChangeNotifier {
 
       final UserModel? responce =
           await readUserInDatabase(FirebaseAuth.instance.currentUser!.uid);
+
       if (kDebugMode) {
         print('=======================user read: ${responce?.toMap()}');
       }

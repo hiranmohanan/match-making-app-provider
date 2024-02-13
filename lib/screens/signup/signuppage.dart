@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:match_making_test/UI%20Elements/font_asowm.dart';
 import 'package:match_making_test/constants/constants.dart';
 import 'package:match_making_test/database/usermodel.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
@@ -15,6 +16,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseSignupProvider>(context, listen: true);
+    final commonpadding = EdgeInsets.symmetric(vertical: vBox0);
 
     logintohome() {
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
@@ -30,18 +32,18 @@ class SignUpPage extends StatelessWidget {
     }
 
     signup() async {
-      provider.setusermodel(
-        UserModel(
-          name: provider.namecontroller.text,
-          email: provider.emailcontroller.text,
-          phone: int.parse(provider.phonecontroller.text),
-          gender: provider.gender,
-        ),
-      );
-      provider.setPassword(provider.passwordcontroller.text);
       provider.setValidator();
-
       if (provider.validator == null) {
+        provider.setusermodel(
+          UserModel(
+            fname: provider.fnamecontroller.text,
+            lname: provider.lnamecontroller.text,
+            email: provider.emailcontroller.text,
+            phone: int.parse(provider.phonecontroller.text),
+            gender: provider.gender,
+          ),
+        );
+        provider.setPassword(provider.passwordcontroller.text);
         await provider.signUp();
         if (provider.isloading == true) {
         } else {
@@ -66,279 +68,224 @@ class SignUpPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(Ks.ksSignUp),
-      ),
-      body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CustomScrollView(
+      appBar: AppBar(),
+      body: provider.isloading == true
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomScrollView(
 
-              // mainAxisAlignment: MainAxisAlignment.center,
-              slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      const Spacer(),
-                      Center(
-                          child: Text(Ks.ksSignUp,
-                              style: KCustomTextStyle.kBold(
-                                  context, 20, KConstantColors.greyTextColor))),
-                      const Spacer(),
-                      vSizedBox2,
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: SizedBox(
-                          height: 60,
-                          child: TextFormField(
-                            controller: provider.namecontroller,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return Ks.ksEnterName;
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: Ks.ksname,
-                              hintText: Ks.ksname,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          const Spacer(),
+                          Center(
+                              child: Text(Ks.ksSignUp,
+                                  style: KCustomTextStyle.kBold(context, 20,
+                                      KConstantColors.greyTextColor))),
+                          const Spacer(),
+                          vSizedBox2,
+                          Padding(
+                            padding: commonpadding,
+                            child: SizedBox(
+                              height: 60,
+                              child: TextFormField(
+                                controller: provider.fnamecontroller,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return Ks.ksEnterFName;
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Kappicons.ksiconfname,
+                                  labelText: Ks.ksfname,
+                                  hintText: Ks.ksfname,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: SizedBox(
-                          height: 60,
-                          child: TextFormField(
-                            controller: provider.emailcontroller,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return Ks.ksEnterEmail;
-                              } else if (!value.contains('@')) {
-                                return Ks.ksEnterValidEmail;
-                              } else if (!value.contains('.')) {
-                                return Ks.ksEnterValidEmail;
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: Ks.ksEmail,
-                              hintText: Ks.ksEmail,
+                          Padding(
+                            padding: commonpadding,
+                            child: SizedBox(
+                              height: 60,
+                              child: TextFormField(
+                                controller: provider.lnamecontroller,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return Ks.ksEnterLName;
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Kappicons.ksiconfname,
+                                  labelText: Ks.kslname,
+                                  hintText: Ks.kslname,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: SizedBox(
-                          height: 60,
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return Ks.ksEnterPhoneNumber;
-                              } else if (value.length < 10) {
-                                return Ks.ksEnterValidPhoneNumber;
-                              }
-                              return null;
-                            },
-                            controller: provider.phonecontroller,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(10),
-                            ],
-                            keyboardType: TextInputType.phone,
-                            autofillHints: const [
-                              AutofillHints.telephoneNumber
-                            ],
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: Ks.ksPhoneNumber,
-                              labelText: Ks.ksPhoneNumber,
+                          Padding(
+                            padding: commonpadding,
+                            child: SizedBox(
+                              height: 60,
+                              child: TextFormField(
+                                controller: provider.emailcontroller,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return Ks.ksEnterEmail;
+                                  } else if (!value.contains('@')) {
+                                    return Ks.ksEnterValidEmail;
+                                  } else if (!value.contains('.')) {
+                                    return Ks.ksEnterValidEmail;
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Kappicons.ksiconemail,
+                                  labelText: Ks.ksEmail,
+                                  hintText: Ks.ksEmail,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          obscureText: provider.issecurefont,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterPassword;
-                            } else if (value.length < 8) {
-                              return Ks.ksPasswordLength;
-                            }
-                            return null;
-                          },
-                          controller: provider.passwordcontroller,
-                          decoration: InputDecoration(
-                            suffixIcon: SizedBox(
-                              height: 5,
-                              child: IconButton(
-                                  constraints:
-                                      BoxConstraints.tight(const Size(20, 20)),
-                                  onPressed: () {
-                                    provider
-                                        .setisSecure(!provider.issecurefont);
-                                  },
-                                  icon: provider.issecurefont
-                                      ? const Icon(Icons.visibility)
-                                      : const Icon(Icons.visibility_off)),
+                          Padding(
+                            padding: commonpadding,
+                            child: SizedBox(
+                              height: 60,
+                              child: TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return Ks.ksEnterPhoneNumber;
+                                  } else if (value.length < 10) {
+                                    return Ks.ksEnterValidPhoneNumber;
+                                  }
+                                  return null;
+                                },
+                                controller: provider.phonecontroller,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                keyboardType: TextInputType.phone,
+                                autofillHints: const [
+                                  AutofillHints.telephoneNumber
+                                ],
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Kappicons.ksiconphone,
+                                  hintText: Ks.ksPhoneNumber,
+                                  labelText: Ks.ksPhoneNumber,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
                             ),
-                            border: const OutlineInputBorder(),
-                            hintText: Ks.ksPassword,
-                            labelText: Ks.ksPassword,
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: SizedBox(
-                          height: 60,
-                          child: DropdownButtonFormField(
-                              hint: const Text(Ks.ksSelect),
-                              value: provider.gender,
-                              items: const [
-                                DropdownMenuItem(
-                                    value: 0, child: Text(Ks.ksBride)),
-                                DropdownMenuItem(
-                                    value: 1, child: Text(Ks.ksGroom)),
-                              ],
-                              onChanged: (val) {
-                                provider.setGender(val!);
-                              },
+                          Padding(
+                            padding: commonpadding,
+                            child: TextFormField(
+                              maxLines: 1,
+                              minLines: 1,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
+                              obscureText: provider.issecurefont,
                               validator: (value) {
-                                if (value == null) {
-                                  return Ks.ksSelect;
+                                if (value == null || value.isEmpty) {
+                                  return Ks.ksEnterPassword;
+                                } else if (value.length < 8) {
+                                  return Ks.ksPasswordLength;
                                 }
                                 return null;
-                              }),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterHeight;
-                            }
-                            return null;
-                          },
-                          controller: provider.heightcontroller,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: Ks.ksHeight,
-                            labelText: Ks.ksHeight,
+                              },
+                              controller: provider.passwordcontroller,
+                              decoration: InputDecoration(
+                                prefixIcon: Kappicons.ksiconpassword,
+                                suffixIcon: SizedBox(
+                                  height: 5,
+                                  child: IconButton(
+                                      constraints: BoxConstraints.tight(
+                                          const Size(20, 20)),
+                                      onPressed: () {
+                                        provider.setisSecure(
+                                            !provider.issecurefont);
+                                      },
+                                      icon: provider.issecurefont
+                                          ? const Icon(Icons.visibility)
+                                          : const Icon(Icons.visibility_off)),
+                                ),
+                                border: const OutlineInputBorder(),
+                                hintText: Ks.ksPassword,
+                                labelText: Ks.ksPassword,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterWeight;
-                            }
-                            return null;
-                          },
-                          controller: provider.weightcontroller,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: Ks.ksWeight,
-                            labelText: Ks.ksWeight,
+                          vSizedBox1,
+                          Padding(
+                            padding: commonpadding,
+                            child: SizedBox(
+                              height: 60,
+                              child: DropdownButtonFormField(
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Kappicons.ksicongender,
+                                    labelText: Ks.ksSelectyour,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  hint: const Text(Ks.ksSelect),
+                                  value: provider.gender,
+                                  items: const [
+                                    DropdownMenuItem(
+                                        value: 0, child: Text(Ks.ksBride)),
+                                    DropdownMenuItem(
+                                        value: 1, child: Text(Ks.ksGroom)),
+                                  ],
+                                  onChanged: (val) {
+                                    provider.setGender(val!);
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return Ks.ksSelect;
+                                    }
+                                    return null;
+                                  }),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterHouse;
-                            }
-                            return null;
-                          },
-                          controller: provider.housecontroller,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: Ks.ksHouse,
-                            labelText: Ks.ksHouse,
+                          ElevatedButton(
+                            onPressed: () {
+                              signup();
+                            },
+                            child: const Text(Ks.ksSignUp),
                           ),
-                        ),
+                          const Spacer()
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterCity;
-                            }
-                            return null;
-                          },
-                          controller: provider.citycontroller,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: Ks.ksCity,
-                            labelText: Ks.ksCity,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(vBox0),
-                        child: TextFormField(
-                          maxLines: 1,
-                          minLines: 1,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Ks.ksEnterState;
-                            }
-                            return null;
-                          },
-                          controller: provider.statecontroller,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: Ks.ksState,
-                            labelText: Ks.ksState,
-                          ),
-                        ),
-                      ),
-                      vSizedBox1,
-                      ElevatedButton(
-                        onPressed: () {
-                          signup();
-                        },
-                        child: const Text(Ks.ksSignUp),
-                      ),
-                      const Spacer()
-                    ],
-                  ),
-                ),
-              ])),
+                    ),
+                  ])),
     );
   }
 }

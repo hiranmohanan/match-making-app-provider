@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/database/usermodel.dart';
-import 'package:match_making_test/local%20data/boxes.dart';
+
+import '../firebase/firebase_storage.dart';
 
 class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _maleProfile;
@@ -11,6 +12,9 @@ class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _searchProfile;
   TextEditingController _searchcontroller = TextEditingController();
   bool _isLoading = false;
+  bool? _isloadingimg;
+  List<String>? _imgurl;
+  List<String> _imgurl1 = [];
 
   List<UserModel>? get maleProfile => _maleProfile;
   List<UserModel>? get femaleProfile => _femaleProfile;
@@ -19,6 +23,8 @@ class ProfileFilterProvider extends ChangeNotifier {
   TextEditingController get searchcontroller => _searchcontroller;
 
   bool get isLoading => _isLoading;
+  bool? get isloadingimg => _isloadingimg;
+  List<String>? get imgurl => _imgurl;
 
   void setMaleProfile(List<UserModel> userlist) {
     _maleProfile = userlist;
@@ -57,6 +63,15 @@ class ProfileFilterProvider extends ChangeNotifier {
     //       '=======================current hive user ${boxuser.get('primaryuser')}');
     // }
   }
+  void setisloadingimg(bool? val) {
+    _isloadingimg = val;
+    notifyListeners();
+  }
+
+  void setimgurl(List<String>? val) {
+    _imgurl = val;
+    notifyListeners();
+  }
 
   Future<List<UserModel>?> fetchProfile() async {
     setLoading(true);
@@ -73,7 +88,8 @@ class ProfileFilterProvider extends ChangeNotifier {
         for (int i = 0; i < responce.length; i++) {
           final UserModel profile = UserModel(
             uid: responce[i].uid.toString(),
-            name: responce[i].name.toString(),
+            fname: responce[i].fname.toString(),
+            lname: responce[i].lname.toString(),
             email: responce[i].email.toString(),
             profilePic: responce[i].profilePic.toString(),
             phone: responce[i].phone.toString(),
@@ -91,6 +107,7 @@ class ProfileFilterProvider extends ChangeNotifier {
             age: responce[i].age,
           );
           responceall.add(profile);
+          await getimagelink(uid: responce[i].uid.toString());
           if (profile.gender == 1) {
             responcem.add(profile);
             // setMaleProfile(profile);
@@ -98,6 +115,11 @@ class ProfileFilterProvider extends ChangeNotifier {
             // setFemaleprofile(profile);
             responcef.add(profile);
           }
+        }
+        setimgurl(_imgurl1);
+        if (kDebugMode) {
+          print('=======================responce of image : ${imgurl?.length}');
+          print("=======================imgurl: $_imgurl1");
         }
         setMaleProfile(responcem);
         setFemaleprofile(responcef);
@@ -114,5 +136,18 @@ class ProfileFilterProvider extends ChangeNotifier {
     }
     setLoading(false);
     return null;
+  }
+
+  Future<void> getimagelink({required String uid}) async {
+    setisloadingimg(true);
+    final responce = await FireStorage().getimagelink(uid: uid);
+
+    if (responce != null) {
+      _imgurl1.add(responce);
+    } else {
+      _imgurl1.add(
+          'https://firebasestorage.googleapis.com/v0/b/match-making-app-bbfd5.appspot.com/o/profilepics%2F6i8pcqPckaUiUDR2umSBdaeOhn13.jpg?alt=media&token=f396558d-5800-4914-9478-3dd9d74acb34');
+    }
+    setisloadingimg(false);
   }
 }
