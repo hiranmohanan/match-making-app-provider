@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:match_making_test/UI%20Elements/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/profile_filter_provider.dart';
@@ -37,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateToNextScreen() async {
     // Simulate some delay before navigating to the next screen
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 5));
     // Determine which screen to navigate to based on some condition
 
     if (FirebaseAuth.instance.currentUser == null) {
@@ -57,9 +59,11 @@ class _SplashScreenState extends State<SplashScreen> {
           if (snapshot.connectionState == ConnectionState.active) {
             User? user = snapshot.data;
             if (user == null) {
-              return const Center(child: Text('Welcome!'));
+              return Center(
+                  child: Lottie.asset(LottieDir().animWelcome, repeat: true));
             } else {
-              return const Center(child: Text('Welcome Back!'));
+              return Center(
+                  child: Lottie.asset(LottieDir().animWelcome, repeat: true));
             }
           }
           return const Center(child: CircularProgressIndicator());
