@@ -156,7 +156,7 @@ class ProfileFetchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchProfile() async {
+  Future<UserModel?> fetchProfile() async {
     setProfilefetched(false);
     setLoading(true);
     try {
@@ -174,6 +174,7 @@ class ProfileFetchProvider extends ChangeNotifier {
         setProfilefetched(true);
         setUserModel(responce);
         setLoading(false);
+        return responce;
         // await boxuser.put(
         //     'primaryuser',
         //     UserModelHive(
@@ -203,5 +204,6 @@ class ProfileFetchProvider extends ChangeNotifier {
         print(e);
       }
     }
+    return null;
   }
 }

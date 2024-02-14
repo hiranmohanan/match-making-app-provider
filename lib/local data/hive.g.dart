@@ -18,19 +18,19 @@ class UserModelHiveAdapter extends TypeAdapter<UserModelHive> {
     };
     return UserModelHive(
       uid: fields[0] as String?,
-      fname: fields[1] as String?,
-      lname: fields[2] as String?,
-      email: fields[4] as String?,
-      profilePic: fields[5] as String?,
-      phone: fields[6] as int?,
-      height: fields[7] as int?,
-      weight: fields[8] as int?,
-      house: fields[9] as String?,
-      city: fields[10] as String?,
-      state: fields[11] as String?,
-      family: fields[12] as String?,
-      gender: fields[13] as int?,
-      age: fields[3] as int?,
+      fname: fields[1] as dynamic,
+      lname: fields[2] as dynamic,
+      email: fields[4] as dynamic,
+      profilePic: fields[5] as dynamic,
+      phone: fields[6] as dynamic,
+      height: fields[7] as dynamic,
+      weight: fields[8] as dynamic,
+      house: fields[9] as dynamic,
+      city: fields[10] as dynamic,
+      state: fields[11] as dynamic,
+      family: fields[12] as dynamic,
+      gender: fields[13] as dynamic,
+      age: fields[3] as dynamic,
     );
   }
 

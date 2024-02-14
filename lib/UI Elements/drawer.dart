@@ -26,7 +26,7 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
   final AppServices _appservices = GetIt.instance<AppServices>();
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
+    // final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
     final pictureprovider =
         Provider.of<FirebaseStorageProvider>(context, listen: true);
     return Drawer(
@@ -95,8 +95,7 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
                         listen: false);
 
                     provider.fetchProfile();
-                    Provider.of<FirebaseStorageProvider>(context, listen: false)
-                        .downloadFile();
+                    FirebaseStorageProvider().downloadFile();
                     _appservices.setCurrentNavTab(1);
                     Navigator.pop(context);
                     Navigator.pushReplacementNamed(context, '/profile');

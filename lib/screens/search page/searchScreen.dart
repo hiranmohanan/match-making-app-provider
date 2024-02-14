@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/shared/dimensions.dart';
-import 'package:match_making_test/shared/fonts.dart';
-import 'package:match_making_test/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -42,18 +39,25 @@ class SearchScreen extends StatelessWidget {
                   delegate: SliverChildListDelegate(
                     [
                       SearchBar(
+                        trailing: [
+                          IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                provider.searchcontroller.clear();
+                                provider
+                                    .setSearchprofiles(provider.fullProfile);
+                              })
+                        ],
                         onChanged: (value) {
-                          if (provider.fullProfile != null) {
-                            if (value.isEmpty) {
-                              provider.setSearchprofiles(provider.fullProfile!);
-                            }
-                            provider.setSearchprofiles(
-                              provider.fullProfile!
-                                  .where((element) =>
-                                      element.fname!.contains(value))
-                                  .toList(),
-                            );
+                          if (value.isEmpty) {
+                            provider.setSearchprofiles(provider.fullProfile);
                           }
+                          provider.setSearchprofiles(
+                            provider.fullProfile
+                                .where(
+                                    (element) => element.fname!.contains(value))
+                                .toList(),
+                          );
                         },
                         // trailing: [
                         //   IconButton(
@@ -107,17 +111,22 @@ class SearchScreen extends StatelessWidget {
                       ),
                       vSizedBox1,
                       ListView.builder(
-                        itemCount: provider.searchProfile?.length ?? 0,
+                        itemCount: provider.searchProfile!.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           if (count == 0) {
                             return const Center(child: Text('No data found'));
                           }
                           return ListTile(
-                            title: Text(provider.searchProfile![index].fname!),
-                            subtitle:
-                                Text(provider.searchProfile![index].email!),
-                          );
+                              title:
+                                  Text(provider.searchProfile![index].fname!),
+                              subtitle:
+                                  Text(provider.searchProfile![index].email!),
+                              onTap: () {
+                                provider.setselectprofile(
+                                    provider.searchProfile![index]);
+                                Navigator.pushNamed(context, '/searchview');
+                              });
                         },
                       ),
                     ],

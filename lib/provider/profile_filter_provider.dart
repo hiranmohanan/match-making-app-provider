@@ -8,23 +8,25 @@ import '../firebase/firebase_storage.dart';
 class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _maleProfile;
   List<UserModel>? _femaleProfile;
-  List<UserModel>? _fullProfile;
+  List<UserModel> _fullProfile = [];
   List<UserModel>? _searchProfile;
   TextEditingController _searchcontroller = TextEditingController();
   bool _isLoading = false;
   bool? _isloadingimg;
   List<String>? _imgurl;
   List<String> _imgurl1 = [];
+  UserModel? _selecedprofile;
 
   List<UserModel>? get maleProfile => _maleProfile;
   List<UserModel>? get femaleProfile => _femaleProfile;
-  List<UserModel>? get fullProfile => _fullProfile;
+  List<UserModel> get fullProfile => _fullProfile;
   List<UserModel>? get searchProfile => _searchProfile;
   TextEditingController get searchcontroller => _searchcontroller;
 
   bool get isLoading => _isLoading;
   bool? get isloadingimg => _isloadingimg;
   List<String>? get imgurl => _imgurl;
+  UserModel? get selecedprofile => _selecedprofile;
 
   void setMaleProfile(List<UserModel> userlist) {
     _maleProfile = userlist;
@@ -73,6 +75,11 @@ class ProfileFilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setselectprofile(UserModel val) {
+    _selecedprofile = val;
+    notifyListeners();
+  }
+
   Future<List<UserModel>?> fetchProfile() async {
     setLoading(true);
     try {
@@ -86,12 +93,13 @@ class ProfileFilterProvider extends ChangeNotifier {
         final List<UserModel> responcef = [];
         final List<UserModel> responceall = [];
         for (int i = 0; i < responce.length; i++) {
+          await getimagelink(uid: responce[i].uid.toString());
           final UserModel profile = UserModel(
             uid: responce[i].uid.toString(),
             fname: responce[i].fname.toString(),
             lname: responce[i].lname.toString(),
             email: responce[i].email.toString(),
-            profilePic: responce[i].profilePic.toString(),
+            profilePic: _imgurl1[i],
             phone: responce[i].phone.toString(),
             height: responce[i].height.toString(),
             weight: responce[i].weight.toString(),
@@ -107,7 +115,6 @@ class ProfileFilterProvider extends ChangeNotifier {
             age: responce[i].age,
           );
           responceall.add(profile);
-          await getimagelink(uid: responce[i].uid.toString());
           if (profile.gender == 1) {
             responcem.add(profile);
             // setMaleProfile(profile);
@@ -120,10 +127,13 @@ class ProfileFilterProvider extends ChangeNotifier {
         if (kDebugMode) {
           print('=======================responce of image : ${imgurl?.length}');
           print("=======================imgurl: $_imgurl1");
+          print(
+              '=======================profile full data : ${responceall.map((e) => e.toMap())}');
         }
         setMaleProfile(responcem);
         setFemaleprofile(responcef);
         setFullProfile(responceall);
+        setLoading(false);
       } else {
         if (kDebugMode) {
           print('=======================error in fetching no data found');

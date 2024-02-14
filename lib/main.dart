@@ -11,6 +11,7 @@ import 'package:match_making_test/provider/firebase_storage_picture.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
 import 'package:match_making_test/screens/home/homeScreen.dart';
 import 'package:match_making_test/screens/login/loginScreen.dart';
+import 'package:match_making_test/screens/search%20page/searchview.dart';
 import 'package:match_making_test/service%20locator.dart';
 import 'package:match_making_test/shared/theme_data_light.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
               return const ProfileScreen();
             },
             '/search': (context) => const SearchScreen(),
+            '/searchview': (context) => const SearchView(),
           },
         ),
       );

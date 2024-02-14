@@ -8,42 +8,43 @@ class UserModelHive {
   final String? uid;
 
   @HiveField(1)
-  final String? fname;
+  final dynamic fname;
+
   @HiveField(2)
-  final String? lname;
+  final dynamic lname;
 
   @HiveField(3)
-  final int? age;
+  final dynamic age;
 
   @HiveField(4)
-  final String? email;
+  final dynamic email;
 
   @HiveField(5)
-  final String? profilePic;
+  final dynamic profilePic;
 
   @HiveField(6)
-  final int? phone;
+  final dynamic phone;
 
   @HiveField(7)
-  final int? height;
+  final dynamic height;
 
   @HiveField(8)
-  final int? weight;
+  final dynamic weight;
 
   @HiveField(9)
-  final String? house;
+  final dynamic house;
 
   @HiveField(10)
-  final String? city;
+  final dynamic city;
 
   @HiveField(11)
-  final String? state;
+  final dynamic state;
 
   @HiveField(12)
-  final String? family;
+  final dynamic family;
 
   @HiveField(13)
-  final int? gender;
+  final dynamic gender;
 
   UserModelHive({
     this.uid,
