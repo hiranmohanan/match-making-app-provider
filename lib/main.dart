@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -74,7 +75,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           // theme is the light theme that is imported from the theme_data_light.dart file
-          theme: lightTheme,
+          theme: FlexThemeData.light(scheme: FlexScheme.indigoM3),
+          darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigoM3),
           // initialRoute is the first page that will be shown when the app is opened
           initialRoute: '/splash',
           // routes are the different pages that are in the app
