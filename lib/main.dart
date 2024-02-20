@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:match_making_test/local%20data/boxes.dart';
 import 'package:match_making_test/local%20data/hive.dart';
@@ -10,11 +9,11 @@ import 'package:match_making_test/firebase_options.dart';
 import 'package:match_making_test/provider/firebase_profile_fetch_provider.dart';
 import 'package:match_making_test/provider/firebase_storage_picture.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
+import 'package:match_making_test/provider/searchprovider.dart';
 import 'package:match_making_test/screens/home/homeScreen.dart';
 import 'package:match_making_test/screens/login/loginScreen.dart';
 import 'package:match_making_test/screens/search%20page/searchview.dart';
 import 'package:match_making_test/service%20locator.dart';
-import 'package:match_making_test/shared/theme_data_light.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -70,6 +69,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<FirebaseStorageProvider>(
             create: (_) => FirebaseStorageProvider(),
+          ),
+          ChangeNotifierProvider<SearchProvider>(
+            create: (_) => SearchProvider(),
           ),
         ],
         child: MaterialApp(

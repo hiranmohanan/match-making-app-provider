@@ -1,18 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:match_making_test/provider/searchprovider.dart';
 import 'package:match_making_test/shared/colors.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../provider/profile_filter_provider.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
+    final provider = Provider.of<SearchProvider>(context, listen: true);
     final TextStyle _textstylename = TextStyle(
       fontSize: 15.sp,
       fontWeight: FontWeight.w500,

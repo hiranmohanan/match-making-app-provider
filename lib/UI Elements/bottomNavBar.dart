@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:match_making_test/provider/searchprovider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/firebase_profile_fetch_provider.dart';
@@ -19,14 +20,18 @@ class BottomNavBr extends StatelessWidget {
           return;
         } else {
           if (value == 0) {
+            _appservices.setCurrentNavTab(value);
             Navigator.pushReplacementNamed(context, '/home');
           } else if (value == 1) {
+            _appservices.setCurrentNavTab(value);
             Provider.of<FirebaseStorageProvider>(context, listen: false)
                 .downloadFile();
             Provider.of<ProfileFetchProvider>(context, listen: false)
                 .fetchProfile();
             Navigator.pushReplacementNamed(context, '/profile');
           } else if (value == 2) {
+            _appservices.setCurrentNavTab(value);
+            Provider.of<SearchProvider>(context, listen: false).getdata();
             Navigator.pushReplacementNamed(context, '/search');
           }
         }

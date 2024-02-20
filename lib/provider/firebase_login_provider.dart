@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/firebase/firebase_signin.dart';
+import 'package:match_making_test/local%20data/boxes.dart';
+import 'package:match_making_test/local%20data/hive.dart';
 
 class FirebaseLoginProvider extends ChangeNotifier {
   bool _isUserLoggedIn = false;
@@ -114,6 +119,7 @@ class FirebaseLoginProvider extends ChangeNotifier {
     }
     if (responce != null) {
       if (responce == 'Signed in') {
+        await storeuser();
         setUserLoggedIn(true);
         loading(false);
       } else {
@@ -127,5 +133,31 @@ class FirebaseLoginProvider extends ChangeNotifier {
       setUserLoggedIn(false);
     }
     loading(false);
+  }
+
+  storeuser() async {
+    await readUserInDatabase(FirebaseAuth.instance.currentUser!.uid)
+        .then((value) async {
+      if (value != null) {
+        boxuser = await Hive.openBox<UserModelHive>('userBox');
+        boxuser.put(
+            'primaryuser',
+            UserModelHive(
+              uid: value.uid,
+              fname: value.fname,
+              lname: value.lname,
+              email: value.email,
+              phone: value.phone,
+              gender: value.gender,
+              age: value.age,
+              weight: value.weight,
+              height: value.height,
+            ));
+      }
+    });
+    if (kDebugMode) {
+      print(
+          '=======================user stored in local database ${boxuser.get('primaryuser')}');
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:match_making_test/UI%20Elements/bottomNavBar.dart';
 import 'package:match_making_test/database/usermodel.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
+import 'package:match_making_test/provider/searchprovider.dart';
 import 'package:match_making_test/shared/dimensions.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -16,29 +17,31 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppServices _appservices = GetIt.instance<AppServices>();
-    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
-    provider.searchloader();
+    final provider = Provider.of<SearchProvider>(context, listen: true);
+
     _appservices.setCurrentNavTab(2);
     _appservices.setCurrentDrawer(2);
 
     return RefreshIndicator(
       onRefresh: () async {
         provider.searchcontroller.clear();
-        provider.searchloader();
+        provider.getdata();
       },
-      child: Scaffold(
-          bottomNavigationBar: const BottomNavBr(),
-          appBar: AppBar(
-            title: const Text('Search'),
-          ),
-          drawer: const AppDrawerCommon(),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: CustomScrollView(
+      child: SafeArea(
+        child: Scaffold(
+            bottomNavigationBar: const BottomNavBr(),
+            drawer: const AppDrawerCommon(),
+            body: CustomScrollView(
               slivers: [
+                SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  title: const Text('Search'),
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
+                      vSizedBox1,
                       SearchBar(
                         trailing: [
                           IconButton(
@@ -46,19 +49,15 @@ class SearchScreen extends StatelessWidget {
                               onPressed: () {
                                 provider.searchcontroller.clear();
                                 provider
-                                    .setSearchprofiles(provider.fullProfile);
+                                    .getdata(); // this is the function that fetches the data from the database
                               })
                         ],
                         onChanged: (value) {
                           if (value.isEmpty) {
-                            provider.setSearchprofiles(provider.fullProfile);
+                            provider.getdata();
+                          } else {
+                            provider.search();
                           }
-                          provider.setSearchprofiles(
-                            provider.fullProfile
-                                .where(
-                                    (element) => element.fname!.contains(value))
-                                .toList(),
-                          );
                         },
                         // trailing: [
                         //   IconButton(
@@ -114,22 +113,23 @@ class SearchScreen extends StatelessWidget {
                         ],
                       ),
                       vSizedBox1,
-                      provider.searchProfile == null
+                      provider.searchList.isEmpty
                           ? const Center(child: Text('No data found'))
-                          : provider.searchProfile!.isEmpty
+                          : provider.searchList.isEmpty
                               ? const Center(child: Text('No data found'))
                               : ListView.builder(
-                                  itemCount: provider.searchProfile!.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: provider.searchList.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                        title: Text(provider
-                                            .searchProfile![index].fname!),
-                                        subtitle: Text(provider
-                                            .searchProfile![index].email!),
+                                        title: Text(
+                                            provider.searchList[index].fname!),
+                                        subtitle: Text(
+                                            provider.searchList[index].email!),
                                         onTap: () {
                                           provider.setselectprofile(
-                                              provider.searchProfile![index]);
+                                              provider.searchList[index]);
                                           Navigator.pushNamed(
                                               context, '/searchview');
                                         });
@@ -139,8 +139,8 @@ class SearchScreen extends StatelessWidget {
                   ),
                 )
               ],
-            ),
-          )),
+            )),
+      ),
     );
   }
 }
@@ -152,10 +152,10 @@ class Filter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int age = 0;
-    int weight = 0;
-    int height = 0;
-    final provider = Provider.of<ProfileFilterProvider>(context, listen: true);
+    int? age;
+    int? weight;
+    int? height;
+    final provider = Provider.of<SearchProvider>(context, listen: true);
     return BottomSheet(
         onClosing: () {},
         builder: (context) {
@@ -173,6 +173,7 @@ class Filter extends StatelessWidget {
                 ),
                 const Text("Age"),
                 DropdownButtonFormField(
+                    value: age,
                     items: const [
                       DropdownMenuItem(child: Text("under 20"), value: 20),
                       DropdownMenuItem(
@@ -192,63 +193,78 @@ class Filter extends StatelessWidget {
                       age = val as int;
                     }),
                 const Text('Height'),
-                DropdownButtonFormField(items: const [
-                  DropdownMenuItem(
-                    child: Text("under 5'0"),
-                    value: 5,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("5'0-5'5"),
-                    value: 5.5,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("5'5-6'0"),
-                    value: 6,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("6'0-6'5"),
-                    value: 6.5,
-                  ),
-                ], onChanged: (val) {}),
+                DropdownButtonFormField(
+                    value: height,
+                    items: const [
+                      DropdownMenuItem(
+                        child: Text("under 130"),
+                        value: 130,
+                      ),
+                      DropdownMenuItem(
+                        child: Text(" under 160"),
+                        value: 140,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("under 200"),
+                        value: 6,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("above 200"),
+                        value: 200,
+                      ),
+                    ],
+                    onChanged: (val) {
+                      height = val;
+                    }),
                 const Text('Weight'),
-                DropdownButtonFormField(items: const [
-                  DropdownMenuItem(
-                    child: Text("under 50"),
-                    value: 50,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("50-60"),
-                    value: 60,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("60-70"),
-                    value: 70,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("70-80"),
-                    value: 80,
-                  ),
-                ], onChanged: (val) {}),
+                DropdownButtonFormField(
+                    value: weight,
+                    items: const [
+                      DropdownMenuItem(
+                        child: Text("under 50"),
+                        value: 50,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("50-60"),
+                        value: 60,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("60-70"),
+                        value: 70,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("70-80"),
+                        value: 80,
+                      ),
+                    ],
+                    onChanged: (val) {
+                      weight = val;
+                    }),
                 ElevatedButton(
                   onPressed: () {
-                    for (provider.fullProfile.length;
-                        provider.fullProfile.length > 0;
-                        provider.fullProfile.length--) {
-                      List<UserModel> model = [];
-                      if (provider.fullProfile[provider.fullProfile.length - 1]
-                              .age! >
-                          age) {
-                        model.add(provider
-                            .fullProfile[provider.fullProfile.length - 1]);
-                      }
-                    }
-                    provider.setSearchprofiles(
-                      provider.fullProfile
-                          .where(age != 0
-                              ? (element) => element.age! < age
-                              : (element) => element.age! < age)
-                          .toList(),
+                    provider.callfilter(
+                      age: age,
+                      height: height,
+                      weight: weight,
                     );
+                    // List<UserModel> model = [];
+
+                    // model = provider.searchList;
+                    // for (int index = 0; index < model.length; index++) {
+                    //   for (int index = model.length - 1; index >= 0; index--) {
+                    //     if ((model[index].age != null &&
+                    //             model[index].age! < age) ||
+                    //         (model[index].height != null &&
+                    //             model[index].height < height) ||
+                    //         (model[index].weight != null &&
+                    //             model[index].weight! < weight)) {
+                    //       model.removeAt(index);
+                    //     }
+                    //   }
+                    // }
+                    // provider.setSearchList(
+                    //   model,
+                    // );
                   },
                   child: const Text('Apply'),
                 )

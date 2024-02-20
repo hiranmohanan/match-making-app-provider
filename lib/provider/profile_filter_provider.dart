@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/database/usermodel.dart';
 
 import '../firebase/firebase_storage.dart';
+import '../local data/boxes.dart';
+import '../local data/hive.dart';
 
 class ProfileFilterProvider extends ChangeNotifier {
   List<UserModel>? _maleProfile;
@@ -89,9 +92,24 @@ class ProfileFilterProvider extends ChangeNotifier {
             '=======================data fetched  ${responce?.map((e) => e.toMap())}');
       }
       if (responce != null) {
-        final List<UserModel> responcem = [];
-        final List<UserModel> responcef = [];
-        final List<UserModel> responceall = [];
+        // final List<UserModel> responceall = [];
+        // responce.asMap().forEach((index, value) async {
+        //   await getimagelink(uid: value.uid.toString());
+        //   final UserModel profile1 = UserModel(
+        //     uid: value.uid.toString(),
+        //     fname: value.fname.toString(),
+        //     lname: value.lname.toString(),
+        //     email: value.email.toString(),
+        //     profilePic: _imgurl1[index],
+        //     phone: value.phone.toString(),
+        //     height: value.height.toString(),
+        //     weight: value.weight.toString(),
+        //     house: value.house.toString(),
+        //     city: value.city.toString(),
+        //     state: value.state.toString(),
+        //     family: value.family.toString(),
+        //   );
+        // });
         for (int i = 0; i < responce.length; i++) {
           await getimagelink(uid: responce[i].uid.toString());
           final UserModel profile = UserModel(
@@ -114,25 +132,19 @@ class ProfileFilterProvider extends ChangeNotifier {
                   ),
             age: responce[i].age,
           );
-          responceall.add(profile);
-          if (profile.gender == 1) {
-            responcem.add(profile);
-            // setMaleProfile(profile);
-          } else if (profile.gender == 0) {
-            // setFemaleprofile(profile);
-            responcef.add(profile);
+
+          boxuser = await Hive.openBox<UserModelHive>('userBox');
+          if (boxuser.get('primaryuser') != null) {
+            final UserModelHive user = boxuser.get('primaryuser');
+
+            if (user.gender != profile.gender) {
+              _fullProfile.add(profile);
+            }
           }
+          setimgurl(_imgurl1);
         }
-        setimgurl(_imgurl1);
-        if (kDebugMode) {
-          print('=======================responce of image : ${imgurl?.length}');
-          print("=======================imgurl: $_imgurl1");
-          print(
-              '=======================profile full data : ${responceall.map((e) => e.toMap())}');
-        }
-        setMaleProfile(responcem);
-        setFemaleprofile(responcef);
-        setFullProfile(responceall);
+        notifyListeners();
+        // setFullProfile(responceall);
         setLoading(false);
       } else {
         if (kDebugMode) {

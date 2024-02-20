@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:match_making_test/database/db.dart';
 import 'package:match_making_test/firebase/firebase_signup.dart';
 import 'package:match_making_test/local%20data/boxes.dart';
@@ -212,10 +213,11 @@ createdbandstore({required UserModel user}) async {
     phone: user.phone,
     gender: user.gender,
   ));
+  boxuser = await Hive.openBox<UserModelHive>('userBox');
   await boxuser.put(
       'primaryuser',
       UserModelHive(
-        uid: user.uid,
+        uid: FirebaseAuth.instance.currentUser!.uid,
         fname: user.fname,
         lname: user.lname,
         email: user.email,
@@ -230,4 +232,8 @@ createdbandstore({required UserModel user}) async {
         gender: user.gender,
         age: null,
       ));
+  if (kDebugMode) {
+    print(
+        '=======================user stored in local database ${boxuser.get('primaryuser')}');
+  }
 }

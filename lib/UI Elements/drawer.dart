@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/firebase_profile_fetch_provider.dart';
 import '../provider/firebase_storage_picture.dart';
+import '../provider/searchprovider.dart';
 import '../services/services_getit.dart';
 
 class AppDrawerCommon extends StatefulWidget {
@@ -106,10 +107,8 @@ class _AppDrawerCommonState extends State<AppDrawerCommon> {
               : ListTile(
                   title: const Text('Search'),
                   onTap: () {
-                    final provider = Provider.of<ProfileFilterProvider>(context,
-                        listen: false);
-                    provider.fetchProfile();
-                    provider.searchloader();
+                    Provider.of<SearchProvider>(context, listen: false)
+                        .getdata();
 
                     _appservices.setCurrentNavTab(2);
 
