@@ -152,9 +152,6 @@ class Filter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int? age;
-    int? weight;
-    int? height;
     final provider = Provider.of<SearchProvider>(context, listen: true);
     return BottomSheet(
         onClosing: () {},
@@ -173,7 +170,7 @@ class Filter extends StatelessWidget {
                 ),
                 const Text("Age"),
                 DropdownButtonFormField(
-                    value: age,
+                    value: provider.filterage,
                     items: const [
                       DropdownMenuItem(child: Text("under 20"), value: 20),
                       DropdownMenuItem(
@@ -188,13 +185,14 @@ class Filter extends StatelessWidget {
                         child: Text("40-50"),
                         value: 50,
                       ),
+                      DropdownMenuItem(child: Text("above 50"), value: 60),
                     ],
                     onChanged: (val) {
-                      age = val as int;
+                      provider.setfiltrage(val);
                     }),
                 const Text('Height'),
                 DropdownButtonFormField(
-                    value: height,
+                    value: provider.filterheight,
                     items: const [
                       DropdownMenuItem(
                         child: Text("under 130"),
@@ -202,23 +200,23 @@ class Filter extends StatelessWidget {
                       ),
                       DropdownMenuItem(
                         child: Text(" under 160"),
-                        value: 140,
+                        value: 160,
                       ),
                       DropdownMenuItem(
                         child: Text("under 200"),
-                        value: 6,
+                        value: 200,
                       ),
                       DropdownMenuItem(
                         child: Text("above 200"),
-                        value: 200,
+                        value: 210,
                       ),
                     ],
                     onChanged: (val) {
-                      height = val;
+                      provider.setfiltrhight(val);
                     }),
                 const Text('Weight'),
                 DropdownButtonFormField(
-                    value: weight,
+                    value: provider.filterweight,
                     items: const [
                       DropdownMenuItem(
                         child: Text("under 50"),
@@ -233,20 +231,17 @@ class Filter extends StatelessWidget {
                         value: 70,
                       ),
                       DropdownMenuItem(
-                        child: Text("70-80"),
+                        child: Text("above 70"),
                         value: 80,
                       ),
                     ],
                     onChanged: (val) {
-                      weight = val;
+                      provider.setfiltrweight(val);
                     }),
                 ElevatedButton(
                   onPressed: () {
-                    provider.callfilter(
-                      age: age,
-                      height: height,
-                      weight: weight,
-                    );
+                    provider.filter();
+                    Navigator.pop(context);
                     // List<UserModel> model = [];
 
                     // model = provider.searchList;

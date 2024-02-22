@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:match_making_test/UI%20Elements/font_asowm.dart';
+import 'package:match_making_test/UI%20Elements/textField.dart';
 import 'package:match_making_test/constants/constants.dart';
 import 'package:match_making_test/provider/firebase_signup_provider.dart';
 import 'package:match_making_test/provider/profile_filter_provider.dart';
@@ -68,41 +69,39 @@ class LoginPage extends StatelessWidget {
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate([
-                  const Spacer(),
+                  vSizedBox4,
                   Center(
                       child: Text(Ks.ksLogin,
                           style: KCustomTextStyle.kBold(
                               context, 20, KConstantColors.greyTextColor))),
-                  vSizedBox1,
+                  vSizedBox2,
                   Padding(
                     padding: commonpadding,
-                    child: SizedBox(
-                      height: 60,
-                      child: TextFormField(
-                        controller: emailcontroller,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return Ks.ksEnterEmail;
-                          } else if (!value.contains('@')) {
-                            return Ks.ksEnterValidEmail;
-                          } else if (!value.contains('.')) {
-                            return Ks.ksEnterValidEmail;
-                          }
+                    child: ComonTextField(
+                      controller: emailcontroller,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return Ks.ksEnterEmail;
+                        } else if (!value.contains('@')) {
+                          return Ks.ksEnterValidEmail;
+                        } else if (!value.contains('.')) {
+                          return Ks.ksEnterValidEmail;
+                        }
 
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          prefixIcon: Kappicons.ksiconemail,
-                          labelText: Ks.ksEmail,
-                        ),
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        prefixIcon: Kappicons.ksiconemail,
+                        labelText: Ks.ksEmail,
                       ),
                     ),
                   ),
                   Padding(
                     padding: commonpadding,
-                    child: TextFormField(
+                    child: ComonTextField(
+                      key: const ValueKey('password'),
                       controller: passwordcontroller,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
@@ -146,11 +145,9 @@ class LoginPage extends StatelessWidget {
                     },
                     child: const Text(Ks.ksAlreadyHaveAnAccount),
                   ),
-                  const Spacer(),
                   provider.isloading == true
                       ? const Center(child: CircularProgressIndicator())
                       : const SizedBox(),
-                  const Spacer(),
                 ]),
               ),
             ],

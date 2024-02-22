@@ -95,24 +95,154 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void filter() {
+  Future<void> filter() async {
+    await fetchProfile();
+    setLoading(true);
     // final List<UserModel> users = _searchList;
+    // notifyListeners();
 
     if (_filterheight != null) {
-      _searchList.removeWhere(
-          (user) => user.height != null && user.height! < _filterheight!);
+      _searchList.removeWhere((user) {
+        if (kDebugMode) {
+          print(
+              '=======================height ${user.height} filter $_filterheight');
+        }
+        if (user.height != 'null') {
+          if (_filterheight == 130) {
+            return int.parse(user.height) >= 130;
+          } else if (_filterheight == 160) {
+            return int.parse(user.height) < 130 &&
+                int.parse(user.height) >= 160;
+          } else if (_filterheight == 200) {
+            return int.parse(user.height) <= 160 &&
+                int.parse(user.height) < 200;
+          } else {
+            return int.parse(user.height) < 200;
+          }
+        } else {
+          return false;
+        }
+      });
     }
 
     if (_filterweight != null) {
-      _searchList.removeWhere(
-          (user) => user.weight != null && user.weight! < _filterweight!);
+      _searchList.removeWhere((user) {
+        if (user.weight != 'null') {
+          if (_filterweight == 50) {
+            return int.parse(user.weight) >= 50;
+          } else if (_filterweight == 70) {
+            return int.parse(user.weight) < 50 && int.parse(user.weight) >= 70;
+          } else if (_filterweight == 90) {
+            return int.parse(user.weight) < 70 && int.parse(user.weight) >= 90;
+          } else if (_filterweight == 110) {
+            return int.parse(user.weight) < 90 && int.parse(user.weight) >= 110;
+          } else if (_filterweight == 130) {
+            return int.parse(user.weight) < 110 &&
+                int.parse(user.weight) >= 130;
+          } else if (_filterweight == 150) {
+            return int.parse(user.weight) < 130 &&
+                int.parse(user.weight) >= 150;
+          } else if (_filterweight == 170) {
+            return int.parse(user.weight) < 150 &&
+                int.parse(user.weight) >= 170;
+          } else if (_filterweight == 190) {
+            return int.parse(user.weight) < 170 &&
+                int.parse(user.weight) >= 190;
+          } else if (_filterweight == 210) {
+            return int.parse(user.weight) < 190 &&
+                int.parse(user.weight) >= 210;
+          } else if (_filterweight == 230) {
+            return int.parse(user.weight) < 210 &&
+                int.parse(user.weight) >= 230;
+          } else if (_filterweight == 250) {
+            return int.parse(user.weight) < 230 &&
+                int.parse(user.weight) >= 250;
+          } else if (_filterweight == 270) {
+            return int.parse(user.weight) < 250 &&
+                int.parse(user.weight) >= 270;
+          } else if (_filterweight == 290) {
+            return int.parse(user.weight) < 270 &&
+                int.parse(user.weight) >= 290;
+          } else if (_filterweight == 310) {
+            return int.parse(user.weight) < 290 &&
+                int.parse(user.weight) >= 310;
+          } else if (_filterweight == 330) {
+            return int.parse(user.weight) < 310 &&
+                int.parse(user.weight) >= 330;
+          } else if (_filterweight == 350) {
+            return int.parse(user.weight) < 330 &&
+                int.parse(user.weight) >= 350;
+          } else if (_filterweight == 370) {
+            return int.parse(user.weight) < 350 &&
+                int.parse(user.weight) >= 370;
+          }
+        } else {
+          return false;
+        }
+        {
+          return false;
+        }
+      });
     }
-
     if (_filterage != null) {
-      _searchList
-          .removeWhere((user) => user.age != null && user.age! < _filterage!);
+      _searchList.removeWhere((user) {
+        if (user.age != null) {
+          if (_filterage! < 18) {
+            return false;
+          }
+          if (_filterage == 20) {
+            return _filterage! <= 20;
+          } else if (_filterage == 30) {
+            return _filterage! <= 30;
+          } else if (_filterage == 40) {
+            return _filterage! <= 40;
+          } else if (_filterage == 50) {
+            return _filterage! <= 50;
+          } else if (_filterage == 60) {
+            return _filterage! <= 60;
+          } else if (_filterage == 70) {
+            return _filterage! <= 70;
+          } else if (_filterage == 80) {
+            return _filterage! <= 80;
+          } else if (_filterage == 90) {
+            return _filterage! <= 90;
+          } else if (_filterage == 100) {
+            return _filterage! <= 100;
+          } else if (_filterage == 110) {
+            return _filterage! <= 110;
+          } else if (_filterage == 120) {
+            return _filterage! <= 120;
+          } else if (_filterage == 130) {
+            return _filterage! <= 130;
+          } else if (_filterage == 140) {
+            return _filterage! <= 140;
+          } else if (_filterage == 150) {
+            return _filterage! <= 150;
+          } else if (_filterage == 160) {
+            return _filterage! <= 160;
+          } else if (_filterage == 170) {
+            return _filterage! <= 170;
+          } else if (_filterage == 180) {
+            return _filterage! <= 180;
+          } else if (_filterage == 190) {
+            return _filterage! <= 190;
+          } else if (_filterage == 200) {
+            return _filterage! <= 200;
+          } else if (_filterage == 210) {
+            return _filterage! <= 210;
+          } else if (_filterage == 220) {
+            return _filterage! <= 220;
+          } else if (_filterage == 230) {
+            return _filterage! <= 230;
+          } else {
+            return false;
+          }
+        }
+        return false;
+      });
     }
-    notifyListeners();
+    // setSearchList(users);
+    setLoading(false);
   }
 
   Future<void> search() async {
@@ -152,6 +282,7 @@ class SearchProvider extends ChangeNotifier {
 
   Future<List<UserModel>?> fetchProfile() async {
     setLoading(true);
+    setSearchList([]);
     try {
       final List<UserModel>? responce = await getAllUser();
       if (kDebugMode) {
